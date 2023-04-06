@@ -4,6 +4,7 @@ from camera import generate_camera_stream
 
 app = Flask(__name__)
 
+
 # Routes
 @app.route("/")
 def home():
