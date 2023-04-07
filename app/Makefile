@@ -2,13 +2,10 @@ install:
 	pip install -r requirements.txt
 
 lint:
-	black --check .
+	pylint *.py
 
 run:
-	export FLASK_APP=app.py && flask run
-
-run-windows:
-	set FLASK_APP=app.py && flask run
+	flask run
 
 clean:
 	find . -name "*.pyc" -delete
