@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
+    {% assets 'scss_all' %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
     <title>Realtime Image Streaming using Flask</title>
   </head>
   <body>
-    <div>
-      <h1>Camera</h1>
-      <img src="{{ url_for('generate_camera') }}" />
+    <div id="main_content">
+      <h1>Realtime Image Streaming using Flask</h1>
+      <div class="camera_container">
+        <img src="{{ url_for('generate_camera') }}" />
+        <div>
+          <button class="camera_play_button">
+            <svg width="15" height="15">
+              <image
+                xlink:href="{{ url_for('static', filename='svg/play.svg') }}"
+                alt="Play button"
+                width="15"
+                height="15"
+              />
+            </svg>
+            Play
+          </button>
+          <button class="camera_stop_button">
+            <svg width="15" height="15">
+              <image
+                xlink:href="{{ url_for('static', filename='svg/stop.svg') }}"
+                alt="Stop button"
+                width="15"
+                height="15"
+              />
+            </svg>
+            Stop
+          </button>
+          <button class="camera_shot_button">
+            <svg width="15" height="15">
+              <image
+                xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"
+                alt="Shot button"
+                width="15"
+                height="15"
+              />
+            </svg>
+            Shot
+          </button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

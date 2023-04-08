@@ -1,0 +1,61 @@
+$cr_dark_blue: #122d53;
+$cr_blue: #4674b2;
+
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  @include flex-col;
+
+  #main_content {
+    @include flex-col;
+
+    h1 {
+      color: $cr_blue;
+    }
+
+    .camera_container {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        justify-content: space-evenly;
+        padding: 24px 0;
+        background: $cr_dark_blue;
+        border-radius: 12px;
+        outline: 4px solid black;
+
+        button {
+          height: 50px;
+          width: 50px;
+          color: $cr_blue;
+          cursor: pointer;
+          font-weight: 700;
+          &.camera_play_button {
+            border-radius: 12px;
+            background-color: #4fa165;
+          }
+
+          &.camera_stop_button {
+            background-color: red;
+          }
+
+          &.camera_shot_button {
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+
+    img {
+      border-radius: 36px;
+      border: 2rem solid $cr_dark_blue;
+      outline: 4px solid black;
+    }
+  }
+}

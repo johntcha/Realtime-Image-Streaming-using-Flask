@@ -13,6 +13,7 @@ clean:
 
 format:
 	black .
+	npx prettier --write .
 
 build:
 	make clean

@@ -1,0 +1,48 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body #main_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body #main_content h1 {
+  color: #4674b2;
+}
+body #main_content .camera_container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+body #main_content .camera_container div {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 24px 0;
+  background: #122d53;
+  border-radius: 12px;
+  outline: 4px solid black;
+}
+body #main_content .camera_container div button {
+  height: 50px;
+  width: 50px;
+  color: #4674b2;
+  cursor: pointer;
+  font-weight: 700;
+}
+body #main_content .camera_container div button.camera_play_button {
+  border-radius: 12px;
+  background-color: #4fa165;
+}
+body #main_content .camera_container div button.camera_stop_button {
+  background-color: red;
+}
+body #main_content .camera_container div button.camera_shot_button {
+  border-radius: 12px;
+}
+body #main_content img {
+  border-radius: 36px;
+  border: 2rem solid #122d53;
+  outline: 4px solid black;
+}
