@@ -12,7 +12,7 @@
       <div id="camera_container">
         <img
           id="camera_feed"
-          src="https://media.tenor.com/0SK8wi-u_gYAAAAd/no-signal-tv.gif"
+          src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
         />
         <div>
           <button id="camera_play_button" onclick="startStopCamera()">
@@ -45,7 +45,9 @@
       let generateCameraUrl = "{{ url_for('generate_camera') }}";
       let playSvgPath = "{{ url_for('static', filename='svg/play.svg') }}";
       let stopSvgPath = "{{ url_for('static', filename='svg/stop.svg') }}";
+      let noSignalGifPath =
+        "{{ url_for('static', filename='gif/no-signal-tv.gif') }}";
     </script>
-    <script src="{{ url_for('static', filename='js/camera_controls.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cameraControls.js') }}"></script>
   </body>
 </html>

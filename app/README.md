@@ -34,4 +34,3 @@ Then, I needed a build management system to automate the compilation of my sourc
 ## Task 3
 
 [Prettier](https://prettier.io/docs/en/install.html)
-

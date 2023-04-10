@@ -7,6 +7,7 @@ body #main_content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 body #main_content h1 {
   color: #4674b2;
@@ -32,6 +33,7 @@ body #main_content #camera_container div button {
   align-items: center;
   gap: 6px;
   font-size: medium;
+  transition-duration: 0.5s;
 }
 body #main_content #camera_container div button#camera_play_button {
   color: white;
@@ -47,4 +49,5 @@ body #main_content img {
   border: 2rem solid #122d53;
   outline: 4px solid black;
   aspect-ratio: 10/7;
+  transition-duration: 0.5s;
 }
