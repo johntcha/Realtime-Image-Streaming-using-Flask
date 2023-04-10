@@ -9,10 +9,13 @@
   <body>
     <div id="main_content">
       <h1>Realtime Image Streaming using Flask</h1>
-      <div class="camera_container">
-        <img src="{{ url_for('generate_camera') }}" />
+      <div id="camera_container">
+        <img
+          id="camera_feed"
+          src="https://media.tenor.com/0SK8wi-u_gYAAAAd/no-signal-tv.gif"
+        />
         <div>
-          <button class="camera_play_button">
+          <button id="camera_play_button" onclick="startStopCamera()">
             <svg width="15" height="15">
               <image
                 xlink:href="{{ url_for('static', filename='svg/play.svg') }}"
@@ -21,20 +24,9 @@
                 height="15"
               />
             </svg>
-            Play
+            <span> Play </span>
           </button>
-          <button class="camera_stop_button">
-            <svg width="15" height="15">
-              <image
-                xlink:href="{{ url_for('static', filename='svg/stop.svg') }}"
-                alt="Stop button"
-                width="15"
-                height="15"
-              />
-            </svg>
-            Stop
-          </button>
-          <button class="camera_shot_button">
+          <button id="camera_shot_button">
             <svg width="15" height="15">
               <image
                 xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"
@@ -43,10 +35,17 @@
                 height="15"
               />
             </svg>
-            Shot
+            <span> Shot </span>
           </button>
         </div>
       </div>
     </div>
+    <script>
+      //url_for are defined here since we can't use them in external .js file
+      let generateCameraUrl = "{{ url_for('generate_camera') }}";
+      let playSvgPath = "{{ url_for('static', filename='svg/play.svg') }}";
+      let stopSvgPath = "{{ url_for('static', filename='svg/stop.svg') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/camera_controls.js') }}"></script>
   </body>
 </html>
