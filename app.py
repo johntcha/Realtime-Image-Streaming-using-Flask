@@ -1,6 +1,6 @@
 from flask import Flask, Response, render_template
-from camera import generate_camera_stream
 from flask_assets import Environment, Bundle
+from camera import capture_image, generate_camera_stream
 
 
 app = Flask(__name__)
@@ -31,3 +31,11 @@ def generate_camera():
     return Response(
         generate_camera_stream(), mimetype="multipart/x-mixed-replace; boundary=frame"
     )
+
+
+@app.route("/capture", methods=["POST"])
+def capture():
+    """
+    Return a message if succeed and an error if failed
+    """
+    return capture_image()

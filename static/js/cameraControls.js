@@ -1,5 +1,6 @@
 let cameraFeed = document.getElementById("camera_feed");
 let cameraPlayButton = document.getElementById("camera_play_button");
+let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
 
 /**
@@ -18,4 +19,28 @@ function startStopCamera() {
   cameraPlayButton
     .querySelector("image")
     .setAttribute("href", isStreaming ? stopSvgPath : playSvgPath);
+}
+
+/**
+ * send post request to capture image
+ * and return a text to inform the result
+ */
+async function captureImage() {
+  try {
+    const response = await fetch("/capture", {
+      method: "POST",
+    });
+    const text = await response.text();
+    snackbar.textContent = text;
+  } catch (error) {
+    console.error(error);
+    snackbar.textContent = "An error occured";
+  }
+  snackbar.style.visibility = "visible";
+  snackbar.style.opacity = "1";
+  snackbar.style.transform = "translate(-50%, 50%)";
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    snackbar.style.transform = "translate(-50%, 0%)";
+  }, 1500);
 }

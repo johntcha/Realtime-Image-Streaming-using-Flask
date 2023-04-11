@@ -4,12 +4,17 @@
     {% assets 'scss_all' %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='svg/shot.svg') }}"
+    />
     <title>Realtime Image Streaming using Flask</title>
   </head>
   <body>
     <div id="main_content">
       <h1>Realtime Image Streaming using Flask</h1>
       <div id="camera_container">
+        <div id="snackbar">tessssst</div>
         <img
           id="camera_feed"
           src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
@@ -26,7 +31,7 @@
             </svg>
             <span> Play </span>
           </button>
-          <button id="camera_shot_button">
+          <button id="camera_shot_button" onclick="captureImage()">
             <svg width="15" height="15">
               <image
                 xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"

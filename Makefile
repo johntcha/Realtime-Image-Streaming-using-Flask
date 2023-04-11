@@ -1,4 +1,8 @@
+VENV = myenv
+
 install:
+	python -m venv $(VENV)
+	make activate
 	pip install -r requirements.txt
 
 lint:
@@ -16,8 +20,16 @@ format:
 	npx prettier --write .
 
 build:
+	@echo Building application...
 	make clean
 	make install
 	make format
 	make lint
+
+# For Linux or macOS:
+# source $(VENV)/bin/activate
+# For Windows:
+activate:
+	@echo Activating virtual environment...
+	call .\$(VENV)\Scripts\activate.bat
 	

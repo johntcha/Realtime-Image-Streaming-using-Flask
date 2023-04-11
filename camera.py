@@ -9,12 +9,12 @@ if not os.path.exists("pictures"):
 # get current directory to find pictures folder
 currentDirectory = os.path.dirname(os.path.abspath(__file__))
 directoryPath = f"{currentDirectory}/pictures"
+# number of picture already in the folder picture
+count = len(os.listdir(directoryPath)) - 1
 
 
 def generate_camera_stream():
     """Get camera frames, encode it and send it in chunks"""
-    # number of picture already in the folder picture
-    # count = len(os.listdir(directoryPath)) - 1
     while True:
         # capture frame by frame
         is_success, frame = cap.read()
@@ -35,13 +35,13 @@ def generate_camera_stream():
         # send the data to the client in chunks
         yield b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
 
-        # concat frame one by one and show result
-        # key = cv2.waitKey(1)
 
-        # shot if 'r' key is pressed
-        # if key == ord("r"):
-        #    count += 1
-        #    cv2.imwrite(os.path.join("pictures", f"picture_{count}.jpg"), frame)
-        # quit if 'q' key is pressed
-        # if key == ord("q"):
-        #    break
+def capture_image():
+    """Take a picture and return a message if succeed"""
+    global count
+    success, frame = cap.read()
+    if success:
+        count += 1
+        cv2.imwrite(os.path.join("pictures", f"picture_{count}.jpg"), frame)
+        return "Picture has been taken successfully!"
+    raise ValueError("Frame is not read correctly")

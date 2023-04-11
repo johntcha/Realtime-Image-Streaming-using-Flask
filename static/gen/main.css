@@ -15,7 +15,18 @@ body #main_content h1 {
 body #main_content #camera_container {
   display: flex;
   flex-direction: column;
-  aspect-ratio: 10/7;
+}
+body #main_content #camera_container #snackbar {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  margin-top: 36px;
+  width: 25%;
+  padding: 12px 24px;
+  transition: opacity 1s, transform 1s;
+  color: white;
+  opacity: 0;
+  visibility: hidden;
 }
 body #main_content #camera_container div {
   display: flex;
@@ -46,8 +57,7 @@ body #main_content #camera_container div button#camera_shot_button {
 }
 body #main_content img {
   border-radius: 36px;
-  border: 2rem solid #122d53;
+  border: 32px solid #122d53;
   outline: 4px solid black;
   aspect-ratio: 10/7;
-  transition-duration: 0.5s;
 }

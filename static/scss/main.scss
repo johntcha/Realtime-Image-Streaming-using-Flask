@@ -1,5 +1,8 @@
 $cr_dark_blue: #122d53;
 $cr_blue: #4674b2;
+$img_border_size: 32px;
+$border_radius_size: 12px;
+$padding_size: 24px;
 
 @mixin flex-col {
   display: flex;
@@ -21,11 +24,23 @@ body {
     #camera_container {
       display: flex;
       flex-direction: column;
-      aspect-ratio: 10/7;
+      #snackbar {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        margin-top: $img_border_size + 4px;
+        width: 25%;
+        padding: $padding_size/2 $padding_size;
+        // transition-duration: 1s;
+        transition: opacity 1s, transform 1s;
+        color: white;
+        opacity: 0;
+        visibility: hidden;
+      }
       div {
         display: flex;
         justify-content: space-evenly;
-        padding: 24px 0;
+        padding: $padding_size 0;
         background: $cr_dark_blue;
         border-radius: 12px;
         outline: 4px solid black;
@@ -54,8 +69,8 @@ body {
     }
 
     img {
-      border-radius: 36px;
-      border: 2rem solid $cr_dark_blue;
+      border-radius: 3 * $border_radius_size;
+      border: 32px solid $cr_dark_blue;
       outline: 4px solid black;
       aspect-ratio: 10/7;
     }
