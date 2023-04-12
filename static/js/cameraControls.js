@@ -1,5 +1,6 @@
 let cameraFeed = document.getElementById("camera_feed");
 let cameraPlayButton = document.getElementById("camera_play_button");
+let cameraShotButton = document.getElementById("camera_shot_button");
 let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
 
@@ -9,6 +10,7 @@ let isStreaming = false;
  */
 function startStopCamera() {
   isStreaming = !isStreaming;
+  cameraShotButton.disabled = !isStreaming;
   cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
   isStreaming
     ? (cameraPlayButton.style.backgroundColor = "#D2042D")

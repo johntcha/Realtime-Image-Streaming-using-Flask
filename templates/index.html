@@ -31,7 +31,11 @@
             </svg>
             <span> Play </span>
           </button>
-          <button id="camera_shot_button" onclick="captureImage()">
+          <button
+            id="camera_shot_button"
+            onclick="captureImage()"
+            disabled="true"
+          >
             <svg width="15" height="15">
               <image
                 xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"
