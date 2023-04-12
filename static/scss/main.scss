@@ -2,7 +2,8 @@ $cr_dark_blue: #122d53;
 $cr_blue: #4674b2;
 $img_border_size: 32px;
 $border_radius_size: 12px;
-$padding_size: 24px;
+$padding_size: 3%;
+$font_size: 1.5vw;
 
 @mixin flex-col {
   display: flex;
@@ -11,6 +12,7 @@ $padding_size: 24px;
 }
 
 body {
+  overflow: hidden;
   @include flex-col;
 
   #main_content {
@@ -19,32 +21,49 @@ body {
 
     h1 {
       color: $cr_blue;
+      font-size: $font_size * 3.5;
+      @media (max-height: 450px) {
+        display: none;
+      }
+      @media (min-width: 875px) {
+        font-size: 46px;
+      }
     }
 
     #camera_container {
       display: flex;
       flex-direction: column;
+      width: 70%;
+      max-width: 700px;
       #snackbar {
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0%);
-        margin-top: $img_border_size + 4px;
+        margin-top: $img_border_size + 6px;
         width: 25%;
-        padding: $padding_size/2 $padding_size;
-        // transition-duration: 1s;
+        padding: $padding_size/3 $padding_size;
         transition: opacity 1s, transform 1s;
         color: white;
         opacity: 0;
         visibility: hidden;
+        border-radius: $border_radius_size/2;
+        font-size: $font_size;
+        align-items: center;
+        @media (max-height: 500px) {
+          margin-top: 2 * $img_border_size/3;
+        }
       }
       div {
         display: flex;
         justify-content: space-evenly;
         padding: $padding_size 0;
         background: $cr_dark_blue;
-        border-radius: 12px;
+        border-radius: $border_radius_size;
         outline: 4px solid black;
-
+        aspect-ratio: 10/1;
+        @media (max-height: 500px) {
+          padding: $padding_size/3 0;
+        }
         button {
           aspect-ratio: 6/5;
           cursor: pointer;
@@ -52,17 +71,22 @@ body {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-size: medium;
+          font-size: $font_size;
           transition-duration: 0.5s;
           &#camera_play_button {
             color: white;
-            border-radius: 12px;
+            border-radius: $border_radius_size;
             background-color: #4fa165;
           }
 
           &#camera_shot_button {
             color: $cr_blue;
-            border-radius: 12px;
+            border-radius: $border_radius_size;
+          }
+          span {
+            @media (max-width: 500px) {
+              display: none;
+            }
           }
         }
       }
@@ -70,9 +94,13 @@ body {
 
     img {
       border-radius: 3 * $border_radius_size;
-      border: 32px solid $cr_dark_blue;
+      border: $img_border_size solid $cr_dark_blue;
       outline: 4px solid black;
       aspect-ratio: 10/7;
+      @media (max-height: 500px) {
+        aspect-ratio: 16/8;
+        border: $img_border_size/2 solid $cr_dark_blue;
+      }
     }
   }
 }

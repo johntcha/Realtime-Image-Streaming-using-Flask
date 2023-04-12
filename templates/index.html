@@ -8,13 +8,14 @@
       rel="shortcut icon"
       href="{{ url_for('static', filename='svg/shot.svg') }}"
     />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Realtime Image Streaming using Flask</title>
   </head>
   <body>
     <div id="main_content">
       <h1>Realtime Image Streaming using Flask</h1>
       <div id="camera_container">
-        <div id="snackbar">tessssst</div>
+        <div id="snackbar"></div>
         <img
           id="camera_feed"
           src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
