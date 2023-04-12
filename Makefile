@@ -2,8 +2,10 @@ VENV = myenv
 
 install:
 	python -m venv $(VENV)
-	make activate
-	pip install -r requirements.txt
+# For Linux or macOS:
+# source $(VENV)/bin/activate && pip install -r requirements.txt
+# For Windows:
+	.\$(VENV)\Scripts\activate.bat && pip install -r requirements.txt
 
 lint:
 	pylint *.py
@@ -25,11 +27,4 @@ build:
 	make install
 	make format
 	make lint
-
-# For Linux or macOS:
-# source $(VENV)/bin/activate
-# For Windows:
-activate:
-	@echo Activating virtual environment...
-	call .\$(VENV)\Scripts\activate.bat
 	
