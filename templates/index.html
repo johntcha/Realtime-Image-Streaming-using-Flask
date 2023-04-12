@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% assets 'scss_all' %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='svg/shot.svg') }}"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Realtime Image Streaming using Flask</title>
+  </head>
+  <body>
+    <div id="main_content">
+      <h1>Realtime Image Streaming using Flask</h1>
+      <div id="camera_container">
+        <div id="snackbar"></div>
+        <img
+          id="camera_feed"
+          src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
+        />
+        <div>
+          <button id="camera_play_button" onclick="startStopCamera()">
+            <svg width="15" height="15">
+              <image
+                xlink:href="{{ url_for('static', filename='svg/play.svg') }}"
+                alt="Play button"
+                width="15"
+                height="15"
+              />
+            </svg>
+            <span> Play </span>
+          </button>
+          <button
+            id="camera_shot_button"
+            onclick="captureImage()"
+            disabled="true"
+          >
+            <svg width="15" height="15">
+              <image
+                xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"
+                alt="Shot button"
+                width="15"
+                height="15"
+              />
+            </svg>
+            <span> Shot </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      //url_for are defined here since we can't use them in external .js file
+      let generateCameraUrl = "{{ url_for('generate_camera') }}";
+      let playSvgPath = "{{ url_for('static', filename='svg/play.svg') }}";
+      let stopSvgPath = "{{ url_for('static', filename='svg/stop.svg') }}";
+      let noSignalGifPath =
+        "{{ url_for('static', filename='gif/no-signal-tv.gif') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/cameraControls.js') }}"></script>
+  </body>
+</html>
