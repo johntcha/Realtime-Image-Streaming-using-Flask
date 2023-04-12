@@ -50,6 +50,12 @@ body #main_content #camera_container #snackbar {
     margin-top: 21.33333px;
   }
 }
+@media (min-width: 1400px) {
+  body #main_content #camera_container #snackbar {
+    font-size: 16px;
+    padding: 4px;
+  }
+}
 body #main_content #camera_container div {
   display: flex;
   justify-content: space-evenly;
