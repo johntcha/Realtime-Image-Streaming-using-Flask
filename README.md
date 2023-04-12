@@ -33,4 +33,10 @@ Then, I needed a build management system to automate the compilation of my sourc
 
 ## Task 3
 
-[Prettier](https://prettier.io/docs/en/install.html)
+Task 3 is dedicated to add the picture capture from the stream and improving the UI/UX of the application. First of all, I added some css, javascript and buttons in order to make the application look like a television. To start or stop the stream, I just changed the `src` of the image tag when we click on the play/stop button. 
+
+Then, I added a route and a function in the `camera.py` file to be able to take a picture when I clicked on the shot button. At first, I wanted to interact directly within the `generate_camera_stream` function as I did for the first task but I didn't manage to do it easily. I found an easier solution: creating another function and directly taking the picture from the defined variable `cap = cv2.VideoCapture(0)` above. If the user manage to take a picture, the function is returning a string informing him the picture has been taken. If not, it will return an error. I needed a way to inform the user about the status of the picture so I added a snackbar to give the message result of the function to imporve the UX.
+
+Next, I made the application responsive: components shrink or enlarge according to the window size. I also added media queries in css to be able to see and interact with the camera on smaller devices and on landscape mode.
+
+Through this task, I also improved my Makefile by adding a format for HTML/CSS/JS files ([Prettier](https://prettier.io/docs/en/install.html)) and added a `virtual environment setup`. I should actually have done it from the start but as I don't use Python and all its libraries usually, I didn't feel the need to use it. However, I think it is important for other persons who will try my application if they have already some dependencies installed. I also removed the folder `app` and extract all the files of it since it was actually useless.
