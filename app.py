@@ -1,6 +1,6 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, request
 from flask_assets import Environment, Bundle
-from camera import capture_image, generate_camera_stream
+from camera import capture_image, generate_camera_stream, set_camera_settings
 
 
 app = Flask(__name__)
@@ -39,3 +39,15 @@ def capture():
     Return a message if succeed and an error if failed
     """
     return capture_image()
+
+
+@app.route("/camera_settings", methods=["POST"])
+def camera_settings():
+    # get the camera settings from the request form
+    exposure = float(request.json["exposure"])
+    saturation = float(request.json["saturation"])
+
+    settings = {"exposure": exposure, "saturation": saturation}
+    set_camera_settings(settings)
+
+    return Response("OK", status=200)
