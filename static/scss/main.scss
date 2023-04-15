@@ -1,5 +1,6 @@
 $cr_dark_blue: #122d53;
 $cr_blue: #4674b2;
+$green_play: #4fa165;
 $img_border_size: 32px;
 $border_radius_size: 12px;
 $padding_size: 3%;
@@ -36,6 +37,8 @@ body {
       width: 70%;
       max-width: 700px;
       #snackbar {
+        outline: 2px solid black;
+        background: $cr_dark_blue;
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0%);
@@ -48,7 +51,9 @@ body {
         visibility: hidden;
         border-radius: $border_radius_size/2;
         font-size: $font_size;
-        align-items: center;
+        text-align: center;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+          rgba(0, 0, 0, 0.22) 0px 10px 10px;
         @media (max-height: 500px) {
           margin-top: 2 * $img_border_size/3;
         }
@@ -57,10 +62,10 @@ body {
           padding: 4px;
         }
       }
-      div {
+      #buttons_container {
         display: flex;
-        justify-content: space-evenly;
-        padding: $padding_size 0;
+        justify-content: space-between;
+        padding: $padding_size;
         background: $cr_dark_blue;
         border-radius: $border_radius_size;
         outline: 4px solid black;
@@ -68,28 +73,84 @@ body {
         @media (max-height: 500px) {
           padding: $padding_size/3 0;
         }
-        button {
-          aspect-ratio: 6/5;
-          cursor: pointer;
-          font-weight: 700;
+        #click_button_list {
           display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: $font_size;
-          transition-duration: 0.5s;
-          &#camera_play_button {
-            color: white;
-            border-radius: $border_radius_size;
-            background-color: #4fa165;
-          }
+          padding-left: 10%;
+          gap: 35%;
+          button {
+            aspect-ratio: 6/5;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: $font_size;
+            transition-duration: 0.5s;
+            justify-content: center;
+            &#camera_play_button {
+              color: white;
+              border-radius: $border_radius_size;
+              background-color: $green_play;
+            }
 
-          &#camera_shot_button {
-            color: $cr_blue;
-            border-radius: $border_radius_size;
+            &#camera_shot_button {
+              color: $cr_blue;
+              border-radius: $border_radius_size;
+            }
+            span {
+              @media (max-width: 500px) {
+                display: none;
+              }
+            }
           }
-          span {
-            @media (max-width: 500px) {
-              display: none;
+        }
+        #drag_button_list {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          gap: 10%;
+          .setting_button_container {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            justify-content: right;
+            @media (max-width: 750px) {
+              gap: 8px;
+            }
+            input[type="range"] {
+              height: 30%;
+              @media (max-width: 750px) {
+                display: none;
+              }
+            }
+            button {
+              @media (min-width: 750px) {
+                display: none;
+              }
+            }
+            span {
+              color: white;
+              font-size: 14px;
+              white-space: nowrap;
+              @media (max-width: 750px) {
+                font-size: 1.5vw;
+              }
+            }
+
+            #setting_click_buttons {
+              display: flex;
+              @media (max-width: 750px) {
+                gap: 4px;
+              }
+              button {
+                border-radius: 6px;
+                aspect-ratio: 4/1;
+                padding: 1px;
+                span {
+                  color: #122d53;
+                  font-size: 2vw;
+                }
+              }
             }
           }
         }

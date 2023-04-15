@@ -33,7 +33,7 @@ Then, I needed a build management system to automate the compilation of my sourc
 
 ## Task 3
 
-Task 3 is dedicated to add the picture capture from the stream and improving the UI/UX of the application. First of all, I added some css, javascript and buttons in order to make the application look like a television. To start or stop the stream, I just changed the `src` of the image tag when we click on the play/stop button. 
+Task 3 is dedicated to add the picture capture from the stream and improving the UI/UX of the application. First of all, I added some css, javascript and buttons in order to make the application look like a television. To start or stop the stream, I just changed the `src` of the image tag when we click on the play/stop button.
 
 Then, I added a route and a function in the `camera.py` file to be able to take a picture when I clicked on the shot button. At first, I wanted to interact directly within the `generate_camera_stream` function as I did for the first task but I didn't manage to do it easily. I found an easier solution: creating another function and directly taking the picture from the defined variable `cap = cv2.VideoCapture(0)` above. If the user manage to take a picture, the function is returning a string informing him the picture has been taken. If not, it will return an error. I needed a way to inform the user about the status of the picture so I added a snackbar to give the message result of the function to imporve the UX.
 

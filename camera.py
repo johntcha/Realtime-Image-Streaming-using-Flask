@@ -1,7 +1,7 @@
 import os
 import cv2
 
-# cv2.CAP_DSHOW parameter with DirectShow API
+# cv2.CAP_DSHOW parameter with DirectShow API for Windows
 # displays a black screen on browser and frame is very slowly generated
 # maybe camera hardware issue ?
 # cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -12,6 +12,10 @@ cap = cv2.VideoCapture(0)
 
 # display camera settings window but seems to be only working with cv2.CAP_DSHOW parameter on VideoCapture
 # cap.set(cv2.CAP_PROP_SETTINGS,0)
+# same for get(), with CAP_DSHOW, it returns the value updated but without, it returns the default value
+# even after being set
+# cap.get(cv2.CAP_PROP_EXPOSURE)
+# cap.get(cv2.CAP_PROP_SATURATION)
 
 if not os.path.exists("pictures"):
     os.makedirs("pictures")
@@ -21,14 +25,15 @@ currentDirectory = os.path.dirname(os.path.abspath(__file__))
 directoryPath = f"{currentDirectory}/pictures"
 # number of picture already in the folder picture
 count = len(os.listdir(directoryPath)) - 1
+exposureDefaultValue = -5
+saturationDefaultValue = 32
 
 
 def generate_camera_stream():
     """Get camera frames, encode it and send it in chunks"""
-    # here I am using a "hack" to reset camera default settings since cv2.VideoCapture(0).get() doesn't seem to change
-    # when we set a value unlike the cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    cap.set(cv2.CAP_PROP_EXPOSURE, cap.get(cv2.CAP_PROP_EXPOSURE))
-    cap.set(cv2.CAP_PROP_SATURATION, cap.get(cv2.CAP_PROP_SATURATION))
+    # setting default value where the stream quality is stable
+    cap.set(cv2.CAP_PROP_EXPOSURE, exposureDefaultValue)
+    cap.set(cv2.CAP_PROP_SATURATION, saturationDefaultValue)
     while True:
         # capture frame by frame
         is_success, frame = cap.read()
@@ -59,7 +64,18 @@ def capture_image():
     raise ValueError("Frame is not read correctly")
 
 
-def set_camera_settings(settings):
+def set_camera_settings(setting_key, setting_value):
     """Change the camera exposure and saturation settings"""
-    cap.set(cv2.CAP_PROP_EXPOSURE, settings["exposure"])
-    cap.set(cv2.CAP_PROP_SATURATION, settings["saturation"])
+    dictio = {
+        "exposure": {
+            "prop": cv2.CAP_PROP_EXPOSURE,
+            "defaultValue": exposureDefaultValue,
+        },
+        "saturation": {
+            "prop": cv2.CAP_PROP_SATURATION,
+            "defaultValue": saturationDefaultValue,
+        },
+    }
+    cap.set(
+        dictio[setting_key]["prop"], setting_value + dictio[setting_key]["defaultValue"]
+    )

@@ -31,6 +31,8 @@ body #main_content #camera_container {
   max-width: 700px;
 }
 body #main_content #camera_container #snackbar {
+  outline: 2px solid black;
+  background: #122d53;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
@@ -43,7 +45,9 @@ body #main_content #camera_container #snackbar {
   visibility: hidden;
   border-radius: 6px;
   font-size: 1.5vw;
-  align-items: center;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 @media (max-height: 500px) {
   body #main_content #camera_container #snackbar {
@@ -56,21 +60,31 @@ body #main_content #camera_container #snackbar {
     padding: 4px;
   }
 }
-body #main_content #camera_container div {
+body #main_content #camera_container #buttons_container {
   display: flex;
-  justify-content: space-evenly;
-  padding: 3% 0;
+  justify-content: space-between;
+  padding: 3%;
   background: #122d53;
   border-radius: 12px;
   outline: 4px solid black;
   aspect-ratio: 10/1;
 }
 @media (max-height: 500px) {
-  body #main_content #camera_container div {
+  body #main_content #camera_container #buttons_container {
     padding: 1% 0;
   }
 }
-body #main_content #camera_container div button {
+body #main_content #camera_container #buttons_container #click_button_list {
+  display: flex;
+  padding-left: 10%;
+  gap: 35%;
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #click_button_list
+  button {
   aspect-ratio: 6/5;
   cursor: pointer;
   font-weight: 700;
@@ -79,20 +93,161 @@ body #main_content #camera_container div button {
   gap: 6px;
   font-size: 1.5vw;
   transition-duration: 0.5s;
+  justify-content: center;
 }
-body #main_content #camera_container div button#camera_play_button {
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #click_button_list
+  button#camera_play_button {
   color: white;
   border-radius: 12px;
   background-color: #4fa165;
 }
-body #main_content #camera_container div button#camera_shot_button {
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #click_button_list
+  button#camera_shot_button {
   color: #4674b2;
   border-radius: 12px;
 }
 @media (max-width: 500px) {
-  body #main_content #camera_container div button span {
+  body
+    #main_content
+    #camera_container
+    #buttons_container
+    #click_button_list
+    button
+    span {
     display: none;
   }
+}
+body #main_content #camera_container #buttons_container #drag_button_list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 10%;
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #drag_button_list
+  .setting_button_container {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: right;
+}
+@media (max-width: 750px) {
+  body
+    #main_content
+    #camera_container
+    #buttons_container
+    #drag_button_list
+    .setting_button_container {
+    gap: 8px;
+  }
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #drag_button_list
+  .setting_button_container
+  input[type="range"] {
+  height: 30%;
+}
+@media (max-width: 750px) {
+  body
+    #main_content
+    #camera_container
+    #buttons_container
+    #drag_button_list
+    .setting_button_container
+    input[type="range"] {
+    display: none;
+  }
+}
+@media (min-width: 750px) {
+  body
+    #main_content
+    #camera_container
+    #buttons_container
+    #drag_button_list
+    .setting_button_container
+    button {
+    display: none;
+  }
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #drag_button_list
+  .setting_button_container
+  span {
+  color: white;
+  font-size: 14px;
+  white-space: nowrap;
+}
+@media (max-width: 750px) {
+  body
+    #main_content
+    #camera_container
+    #buttons_container
+    #drag_button_list
+    .setting_button_container
+    span {
+    font-size: 1.5vw;
+  }
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #drag_button_list
+  .setting_button_container
+  #setting_click_buttons {
+  display: flex;
+}
+@media (max-width: 750px) {
+  body
+    #main_content
+    #camera_container
+    #buttons_container
+    #drag_button_list
+    .setting_button_container
+    #setting_click_buttons {
+    gap: 4px;
+  }
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #drag_button_list
+  .setting_button_container
+  #setting_click_buttons
+  button {
+  border-radius: 6px;
+  aspect-ratio: 4/1;
+  padding: 1px;
+}
+body
+  #main_content
+  #camera_container
+  #buttons_container
+  #drag_button_list
+  .setting_button_container
+  #setting_click_buttons
+  button
+  span {
+  color: #122d53;
+  font-size: 2vw;
 }
 body #main_content img {
   border-radius: 36px;

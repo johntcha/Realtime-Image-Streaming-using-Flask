@@ -43,11 +43,14 @@ def capture():
 
 @app.route("/camera_settings", methods=["POST"])
 def camera_settings():
-    # get the camera settings from the request form
-    exposure = float(request.json["exposure"])
-    saturation = float(request.json["saturation"])
+    """
+    Getting the key and value of setting and pass it to set_camera_settings
+    returns 200 if success
+    """
+    for key, value in request.json.items():
+        setting_key = key
+        setting_value = int(value)
 
-    settings = {"exposure": exposure, "saturation": saturation}
-    set_camera_settings(settings)
+    set_camera_settings(setting_key, setting_value)
 
     return Response("OK", status=200)
