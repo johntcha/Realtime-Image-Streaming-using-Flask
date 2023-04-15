@@ -46,7 +46,7 @@ body {
         margin-top: $img_border_size + 6px;
         width: 25%;
         padding: $padding_size/3 $padding_size;
-        transition: opacity 1s, transform 1s;
+        transition: opacity 0.5s, transform 1s;
         color: white;
         opacity: 0;
         visibility: hidden;
@@ -55,6 +55,7 @@ body {
         text-align: center;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
           rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        z-index: 1;
         @media (max-height: 500px) {
           margin-top: 2 * $img_border_size/3;
         }
@@ -66,6 +67,7 @@ body {
       #settings_info_box {
         display: none;
         position: absolute;
+        width: 38%;
         flex-direction: column;
         gap: 2px;
         background: black;
@@ -76,6 +78,9 @@ body {
         margin-right: $img_border_size;
         font-size: $font_size;
         padding: 8px;
+        @media (min-width: 950px) {
+          font-size: 14px;
+        }
       }
       #buttons_container {
         display: flex;
@@ -86,7 +91,7 @@ body {
         outline: 4px solid black;
         aspect-ratio: 10/1;
         @media (max-height: 500px) {
-          padding: $padding_size/3 0;
+          padding: $padding_size/3;
         }
         #click_button_list {
           display: flex;

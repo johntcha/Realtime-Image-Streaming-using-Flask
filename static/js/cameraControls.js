@@ -10,8 +10,18 @@ let minusSaturation = document.getElementById(
   "setting_button_minus_saturation"
 );
 let plusSaturation = document.getElementById("setting_button_plus_saturation");
+const disableableHTMLComponents = [
+  cameraShotButton,
+  exposureDragger,
+  saturationDragger,
+  minusExposure,
+  plusExposure,
+  minusSaturation,
+  plusSaturation,
+];
 let exposureInfoSpan = document.getElementById("info_exposure");
 let saturationInfoSpan = document.getElementById("info_saturation");
+let timeStampInfoSpan = document.getElementById("info_timestamp");
 let settingsInfoBox = document.getElementById("settings_info_box");
 let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
@@ -45,21 +55,36 @@ async function fetchDefaultSettings() {
  * changing the button if the feed is displayed or not
  */
 async function startStopCamera() {
-  const { exposure, saturation } = await fetchDefaultSettings();
-  let currentValueExposure = exposure;
-  let currentValueSaturation = saturation;
   isStreaming = !isStreaming;
+  await resetOnStop(isStreaming);
+  cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
+  // start/stop button management
+  isStreaming
+    ? (cameraPlayButton.style.backgroundColor = stop_red_color)
+    : (cameraPlayButton.style.backgroundColor = green_play_color);
+  cameraPlayButton.querySelector("span").innerText = isStreaming
+    ? "Stop"
+    : "Play";
+  cameraPlayButton
+    .querySelector("image")
+    .setAttribute("href", isStreaming ? stopSvgPath : playSvgPath);
+}
+
+/**
+ * Disable buttons and reset settings values on stop stream
+ * @param {boolean} isStreaming
+ */
+async function resetOnStop(isStreaming) {
   // picture button and settings disabled when not streaming
-  cameraShotButton.disabled = !isStreaming;
-  exposureDragger.disabled = !isStreaming;
-  saturationDragger.disabled = !isStreaming;
-  minusExposure.disabled = !isStreaming;
-  plusExposure.disabled = !isStreaming;
-  minusSaturation.disabled = !isStreaming;
-  plusSaturation.disabled = !isStreaming;
+  for (const button of disableableHTMLComponents) {
+    button.disabled = !isStreaming;
+  }
 
   // set default settings values and hide the info box if not streaming
   if (isStreaming) {
+    const { exposure, saturation } = await fetchDefaultSettings();
+    let currentValueExposure = exposure;
+    let currentValueSaturation = saturation;
     settingsInfoBox.style.display = "flex";
     exposureInfoSpan.textContent = `Exposure: ${currentValueExposure}`;
     saturationInfoSpan.textContent = `Saturation: ${currentValueSaturation}`;
@@ -83,22 +108,11 @@ async function startStopCamera() {
       saturationDragger.previousElementSibling
     );
   }
-  cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
-  // start/stop button management
-  isStreaming
-    ? (cameraPlayButton.style.backgroundColor = stop_red_color)
-    : (cameraPlayButton.style.backgroundColor = green_play_color);
-  cameraPlayButton.querySelector("span").innerText = isStreaming
-    ? "Stop"
-    : "Play";
-  cameraPlayButton
-    .querySelector("image")
-    .setAttribute("href", isStreaming ? stopSvgPath : playSvgPath);
 }
 
 /**
- * send post request to capture image
- * and return a text to inform the result
+ * send post request to capture image and get message and timestamp of the capture
+ * @returns object with message and timestamp
  */
 async function captureImage() {
   let textContent = "";
@@ -107,8 +121,9 @@ async function captureImage() {
     const response = await fetch("/capture", {
       method: "POST",
     });
-    const text = await response.text();
-    textContent = text;
+    const { message, timestamp } = await response.json();
+    textContent = message;
+    timeStampInfoSpan.textContent = `Last capturing timing stamp: ${timestamp}`;
     backgroundColor = green_play_color;
   } catch (error) {
     console.error(error);
