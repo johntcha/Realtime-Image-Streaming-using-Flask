@@ -1,7 +1,12 @@
-from flask import Flask, Response, render_template
-from flask_assets import Environment, Bundle
-from camera import capture_image, generate_camera_stream
+from flask import Flask, Response, render_template, request
+from flask_assets import Bundle, Environment
 
+from camera import (
+    capture_image,
+    generate_camera_stream,
+    get_default_settings,
+    set_camera_settings,
+)
 
 app = Flask(__name__)
 assets = Environment(app)
@@ -36,6 +41,26 @@ def generate_camera():
 @app.route("/capture", methods=["POST"])
 def capture():
     """
-    Return a message if succeed and an error if failed
+    Return a dict with message and timestamp if succeed and an error if failed
     """
     return capture_image()
+
+
+@app.route("/camera_settings", methods=["POST"])
+def camera_settings():
+    """
+    Getting the key and value of setting and pass it to set_camera_settings
+    returns real time settings
+    """
+    for key, value in request.json.items():
+        setting_key = key
+        setting_value = int(value)
+    return set_camera_settings(setting_key, setting_value)
+
+
+@app.route("/default_settings", methods=["GET"])
+def default_settings():
+    """
+    Fetch the default settings values
+    """
+    return get_default_settings()

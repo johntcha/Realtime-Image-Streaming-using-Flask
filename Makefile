@@ -14,8 +14,11 @@ run:
 	flask run
 
 clean:
-	find . -name "*.pyc" -delete
-	find . -name "__pycache__" -delete
+# For Linux or macOS (also gitbash):
+#find . -name "*.pyc" -delete
+#find . -name "__pycache__" -delete
+	del /s *.pyc
+	del /s __pycache__
 
 format:
 	black .
@@ -26,5 +29,4 @@ build:
 	make clean
 	make install
 	make format
-	make lint
 	
