@@ -1,3 +1,4 @@
+// variables
 let cameraFeed = document.getElementById("camera_feed");
 let cameraPlayButton = document.getElementById("camera_play_button");
 let cameraShotButton = document.getElementById("camera_shot_button");
@@ -9,18 +10,44 @@ let minusSaturation = document.getElementById(
   "setting_button_minus_saturation"
 );
 let plusSaturation = document.getElementById("setting_button_plus_saturation");
+let exposureInfoSpan = document.getElementById("info_exposure");
+let saturationInfoSpan = document.getElementById("info_saturation");
+let settingsInfoBox = document.getElementById("settings_info_box");
 let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
 let green_play_color = "#4fa165";
 let stop_red_color = "#D2042D";
-let valueExposure = 0;
-let valueSaturation = 0;
+let clickableValueExposure = 0;
+let clickableValueSaturation = 0;
+
+/**
+ *
+ * @returns object with default settings and their values
+ */
+async function fetchDefaultSettings() {
+  let textContent = "";
+  let backgroundColor = "";
+  try {
+    const response = await fetch("/default_settings", {
+      method: "GET",
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    textContent = "An error occured while fetching default settings values";
+    backgroundColor = stop_red_color;
+  }
+  informWithSnackbar(textContent, backgroundColor);
+}
 
 /**
  * function fetching the camera feed according to the play/stop button
  * changing the button if the feed is displayed or not
  */
-function startStopCamera() {
+async function startStopCamera() {
+  const { exposure, saturation } = await fetchDefaultSettings();
+  let currentValueExposure = exposure;
+  let currentValueSaturation = saturation;
   isStreaming = !isStreaming;
   // picture button and settings disabled when not streaming
   cameraShotButton.disabled = !isStreaming;
@@ -31,11 +58,19 @@ function startStopCamera() {
   minusSaturation.disabled = !isStreaming;
   plusSaturation.disabled = !isStreaming;
 
+  // set default settings values and hide the info box if not streaming
+  if (isStreaming) {
+    settingsInfoBox.style.display = "flex";
+    exposureInfoSpan.textContent = `Exposure: ${currentValueExposure}`;
+    saturationInfoSpan.textContent = `Saturation: ${currentValueSaturation}`;
+  } else {
+    settingsInfoBox.style.display = "none";
+  }
   // reset settings on stop
   exposureDragger.value = 0;
   saturationDragger.value = 0;
-  valueExposure = 0;
-  valueSaturation = 0;
+  clickableValueExposure = 0;
+  clickableValueSaturation = 0;
   if (!isStreaming) {
     settingNewText(
       "exposure",
@@ -49,6 +84,7 @@ function startStopCamera() {
     );
   }
   cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
+  // start/stop button management
   isStreaming
     ? (cameraPlayButton.style.backgroundColor = stop_red_color)
     : (cameraPlayButton.style.backgroundColor = green_play_color);
@@ -87,7 +123,7 @@ async function captureImage() {
  * Also displaying the added or removed value
  * @param {string} settingName
  */
-function setCameraDraggerSettings(settingName) {
+async function setCameraDraggerSettings(settingName) {
   let modifiedSettingDrag = document.getElementById(
     `setting_drag_${settingName}`
   );
@@ -97,11 +133,14 @@ function setCameraDraggerSettings(settingName) {
   let param = { [settingName]: modifiedSettingDrag.value };
 
   try {
-    fetch("/camera_settings", {
+    const response = await fetch("/camera_settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(param),
     });
+    const settings = await response.json();
+    let infoSpan = document.getElementById(`info_${settingName}`);
+    settingNewText(settingName, settings[settingName], infoSpan);
   } catch (error) {
     console.error(error);
     informWithSnackbar(
@@ -117,27 +156,32 @@ function setCameraDraggerSettings(settingName) {
  * @param {boolean} increase
  * @param {string} settingName
  */
-function setCameraClickButtonSettings(increase, settingName) {
+async function setCameraClickButtonSettings(increase, settingName) {
   let correspondingSpan = document.getElementById(
     `setting_drag_${settingName}`
   ).previousElementSibling;
   let value = 0;
   if (settingName === "exposure") {
-    valueExposure += increase ? 1 : -1;
-    value = valueExposure;
-  } else {
-    valueSaturation += increase ? 10 : -10;
-    value = valueSaturation;
+    clickableValueExposure += increase ? 1 : -1;
+    value = clickableValueExposure;
+  }
+  if (settingName === "saturation") {
+    clickableValueSaturation += increase ? 5 : -5;
+    value = clickableValueSaturation;
   }
   settingNewText(settingName, value, correspondingSpan);
   let param = { [settingName]: value };
 
   try {
-    fetch("/camera_settings", {
+    const response = await fetch("/camera_settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(param),
     });
+    const settings = await response.json();
+    let infoSpan = document.getElementById(`info_${settingName}`);
+    settingNewText(settingName, settings[settingName], infoSpan);
+    console.log("settings", settings);
   } catch (error) {
     console.error(error);
     informWithSnackbar(

@@ -36,6 +36,7 @@ body {
       flex-direction: column;
       width: 70%;
       max-width: 700px;
+      position: relative;
       #snackbar {
         outline: 2px solid black;
         background: $cr_dark_blue;
@@ -61,6 +62,20 @@ body {
           font-size: 16px;
           padding: 4px;
         }
+      }
+      #settings_info_box {
+        display: none;
+        position: absolute;
+        flex-direction: column;
+        gap: 2px;
+        background: black;
+        color: white;
+        opacity: 0.7;
+        right: 0;
+        margin-top: $img_border_size;
+        margin-right: $img_border_size;
+        font-size: $font_size;
+        padding: 8px;
       }
       #buttons_container {
         display: flex;

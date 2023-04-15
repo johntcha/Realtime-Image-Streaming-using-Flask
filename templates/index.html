@@ -16,6 +16,11 @@
       <h1>Realtime Image Streaming using Flask</h1>
       <div id="camera_container">
         <div id="snackbar"></div>
+        <div id="settings_info_box">
+          <span id="info_exposure"></span>
+          <span id="info_saturation"></span>
+          <span id="info_timestamp">Capturing timing stamp: 12412512</span>
+        </div>
         <img
           id="camera_feed"
           src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
@@ -91,7 +96,7 @@
                 min="-50"
                 max="50"
                 value="0"
-                step="10"
+                step="5"
                 oninput="setCameraDraggerSettings('saturation')"
                 disabled="true"
               />

@@ -25,8 +25,13 @@ currentDirectory = os.path.dirname(os.path.abspath(__file__))
 directoryPath = f"{currentDirectory}/pictures"
 # number of picture already in the folder picture
 count = len(os.listdir(directoryPath)) - 1
-exposureDefaultValue = -5
+exposureDefaultValue = -4
 saturationDefaultValue = 32
+
+# it would be easier with cap.get(cv2.CAP_PROP_EXPOSURE) or cap.get(cv2.CAP_PROP_SATURATION)
+# but is not working without cv2.CAP_DSHOW
+currentExposureValue = exposureDefaultValue
+currentSaturationValue = saturationDefaultValue
 
 
 def generate_camera_stream():
@@ -65,17 +70,33 @@ def capture_image():
 
 
 def set_camera_settings(setting_key, setting_value):
-    """Change the camera exposure and saturation settings"""
-    dictio = {
+    """Change the camera exposure and saturation settings and return current settings value"""
+    settings = {
         "exposure": {
             "prop": cv2.CAP_PROP_EXPOSURE,
             "defaultValue": exposureDefaultValue,
+            "currentValue": currentExposureValue,
         },
         "saturation": {
             "prop": cv2.CAP_PROP_SATURATION,
             "defaultValue": saturationDefaultValue,
+            "currentValue": currentSaturationValue,
         },
     }
-    cap.set(
-        dictio[setting_key]["prop"], setting_value + dictio[setting_key]["defaultValue"]
+    settings[setting_key]["currentValue"] = (
+        setting_value + settings[setting_key]["defaultValue"]
     )
+    cap.set(
+        settings[setting_key]["prop"],
+        setting_value + settings[setting_key]["defaultValue"],
+    )
+    # creating new dict with all settings name paired with updated value
+    real_time_settings = {}
+    for key, value in settings.items():
+        real_time_settings[key] = value["currentValue"]
+    return real_time_settings
+
+
+def get_default_settings():
+    """Returns the default settings values"""
+    return {"exposure": exposureDefaultValue, "saturation": saturationDefaultValue}

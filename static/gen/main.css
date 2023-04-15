@@ -29,6 +29,7 @@ body #main_content #camera_container {
   flex-direction: column;
   width: 70%;
   max-width: 700px;
+  position: relative;
 }
 body #main_content #camera_container #snackbar {
   outline: 2px solid black;
@@ -59,6 +60,20 @@ body #main_content #camera_container #snackbar {
     font-size: 16px;
     padding: 4px;
   }
+}
+body #main_content #camera_container #settings_info_box {
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  gap: 2px;
+  background: black;
+  color: white;
+  opacity: 0.7;
+  right: 0;
+  margin-top: 32px;
+  margin-right: 32px;
+  font-size: 1.5vw;
+  padding: 8px;
 }
 body #main_content #camera_container #buttons_container {
   display: flex;
