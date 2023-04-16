@@ -196,7 +196,6 @@ async function setCameraClickButtonSettings(increase, settingName) {
     const settings = await response.json();
     let infoSpan = document.getElementById(`info_${settingName}`);
     settingNewText(settingName, settings[settingName], infoSpan);
-    console.log("settings", settings);
   } catch (error) {
     console.error(error);
     informWithSnackbar(
