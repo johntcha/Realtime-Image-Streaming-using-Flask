@@ -1,15 +1,28 @@
 // variables
+let mainTemplateContent = document.getElementById("main_template").content;
+let settingsTemplateContent =
+  document.getElementById("settings_template").content;
 let cameraFeed = document.getElementById("camera_feed");
-let cameraPlayButton = document.getElementById("camera_play_button");
-let cameraShotButton = document.getElementById("camera_shot_button");
-let exposureDragger = document.getElementById("setting_drag_exposure");
-let saturationDragger = document.getElementById("setting_drag_saturation");
-let minusExposure = document.getElementById("setting_button_minus_exposure");
-let plusExposure = document.getElementById("setting_button_plus_exposure");
-let minusSaturation = document.getElementById(
+let cameraPlayButton = mainTemplateContent.getElementById("camera_play_button");
+let cameraShotButton = mainTemplateContent.getElementById("camera_shot_button");
+let exposureDragger = settingsTemplateContent.getElementById(
+  "setting_drag_exposure"
+);
+let saturationDragger = settingsTemplateContent.getElementById(
+  "setting_drag_saturation"
+);
+let minusExposure = settingsTemplateContent.getElementById(
+  "setting_button_minus_exposure"
+);
+let plusExposure = settingsTemplateContent.getElementById(
+  "setting_button_plus_exposure"
+);
+let minusSaturation = settingsTemplateContent.getElementById(
   "setting_button_minus_saturation"
 );
-let plusSaturation = document.getElementById("setting_button_plus_saturation");
+let plusSaturation = settingsTemplateContent.getElementById(
+  "setting_button_plus_saturation"
+);
 const disableableHTMLComponents = [
   cameraShotButton,
   exposureDragger,
@@ -60,7 +73,7 @@ async function fetchDefaultSettings() {
  * function fetching the camera feed according to the play/stop button
  * changing the button if the feed is displayed or not
  */
-async function startStopCamera() {
+async function startStopCamera(templateId) {
   isStreaming = !isStreaming;
   await resetOnStop(isStreaming);
   cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
@@ -74,6 +87,7 @@ async function startStopCamera() {
   cameraPlayButton
     .querySelector("image")
     .setAttribute("href", isStreaming ? stopSvgPath : playSvgPath);
+  setButtonList(templateId);
 }
 
 /**
@@ -97,12 +111,12 @@ async function resetOnStop(isStreaming) {
   } else {
     settingsInfoBox.style.display = "none";
   }
-  // reset settings on stop
-  exposureDragger.value = 0;
-  saturationDragger.value = 0;
-  clickableValueExposure = 0;
-  clickableValueSaturation = 0;
   if (!isStreaming) {
+    // reset settings on stop
+    exposureDragger.value = 0;
+    saturationDragger.value = 0;
+    clickableValueExposure = 0;
+    clickableValueSaturation = 0;
     settingNewText(
       "exposure",
       exposureDragger.value,
@@ -144,13 +158,21 @@ async function captureImage() {
  * Also displaying the added or removed value
  * @param {string} settingName
  */
-async function setCameraDraggerSettings(settingName) {
+async function setCameraDraggerSettings(settingName, templateId) {
   let modifiedSettingDrag = document.getElementById(
     `setting_drag_${settingName}`
   );
+  let templateSettingDrag = settingsTemplateContent.getElementById(
+    `setting_drag_${settingName}`
+  );
   let correspondingSpan = modifiedSettingDrag.previousElementSibling;
-
+  let templateCorrespondingSpan = templateSettingDrag.previousElementSibling;
   settingNewText(settingName, modifiedSettingDrag.value, correspondingSpan);
+  settingNewText(
+    settingName,
+    modifiedSettingDrag.value,
+    templateCorrespondingSpan
+  );
   let param = { [settingName]: modifiedSettingDrag.value };
 
   try {
@@ -162,6 +184,8 @@ async function setCameraDraggerSettings(settingName) {
     const settings = await response.json();
     let infoSpan = document.getElementById(`info_${settingName}`);
     settingNewText(settingName, settings[settingName], infoSpan);
+    templateSettingDrag.value = modifiedSettingDrag.value;
+    setButtonList(templateId);
   } catch (error) {
     console.error(error);
     informWithSnackbar(
@@ -249,6 +273,10 @@ function setButtonList(templateId) {
   let templateContentClone = document
     .getElementById(templateId)
     .content.cloneNode(true);
+  console.log(
+    document.getElementById(templateId).content,
+    settingsTemplateContent
+  );
   buttonContainer.replaceChildren(templateContentClone);
 }
 

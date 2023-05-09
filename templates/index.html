@@ -51,7 +51,10 @@
     <!-- Templates to avoid to render all button lists -->
     <template id="main_template">
       <div id="click_button_list">
-        <button id="camera_play_button" onclick="startStopCamera()">
+        <button
+          id="camera_play_button"
+          onclick="startStopCamera('main_template')"
+        >
           <svg width="15" height="15">
             <image
               xlink:href="{{ url_for('static', filename='svg/play.svg') }}"
@@ -102,7 +105,7 @@
             max="3"
             value="0"
             step="1"
-            oninput="setCameraDraggerSettings('exposure')"
+            oninput="setCameraDraggerSettings('exposure', 'settings_template')"
             disabled="true"
           />
           <div id="setting_click_buttons">
@@ -131,7 +134,7 @@
             max="50"
             value="0"
             step="5"
-            oninput="setCameraDraggerSettings('saturation')"
+            oninput="setCameraDraggerSettings('saturation', 'settings_template')"
             disabled="true"
           />
           <div id="setting_click_buttons">
