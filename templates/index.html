@@ -14,113 +14,145 @@
   <body>
     <div id="main_content">
       <h1>Realtime Image Streaming using Flask</h1>
-      <div id="camera_container">
-        <div id="snackbar"></div>
-        <div id="settings_info_box">
-          <span id="info_exposure"></span>
-          <span id="info_saturation"></span>
-          <span id="info_timestamp">Last capturing timing stamp: none</span>
+      <div id="television_container">
+        <div id="camera_container">
+          <div id="snackbar"></div>
+          <div id="settings_info_box">
+            <span id="info_exposure"></span>
+            <span id="info_saturation"></span>
+            <span id="info_timestamp">Last capturing timing stamp: none</span>
+          </div>
+          <img
+            id="camera_feed"
+            src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
+          />
+          <div id="buttons_container"></div>
         </div>
-        <img
-          id="camera_feed"
-          src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
-        />
-        <div id="buttons_container">
-          <div id="click_button_list">
-            <button id="camera_play_button" onclick="startStopCamera()">
-              <svg width="15" height="15">
-                <image
-                  xlink:href="{{ url_for('static', filename='svg/play.svg') }}"
-                  alt="Play button"
-                  width="15"
-                  height="15"
-                />
-              </svg>
-              <span> Play </span>
-            </button>
-            <button
-              id="camera_shot_button"
-              onclick="captureImage()"
-              disabled="true"
-            >
-              <svg width="15" height="15">
-                <image
-                  xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"
-                  alt="Shot button"
-                  width="15"
-                  height="15"
-                />
-              </svg>
-              <span> Shot </span>
-            </button>
-          </div>
-          <!-- It would be better to get from the back the min and max value of the current camera settings
-              to set it in js for the input but it doesn't seem to be possible to get these data ?
-          -->
-          <div id="drag_button_list">
-            <div class="setting_button_container">
-              <span>Exposure: 0</span>
-              <!-- oninput to execute function while moving cursor -->
-              <input
-                id="setting_drag_exposure"
-                type="range"
-                min="-3"
-                max="3"
-                value="0"
-                step="1"
-                oninput="setCameraDraggerSettings('exposure')"
-                disabled="true"
-              />
-              <div id="setting_click_buttons">
-                <button
-                  id="setting_button_minus_exposure"
-                  onclick="setCameraClickButtonSettings(false, 'exposure')"
-                  disabled="true"
-                >
-                  <span>-</span>
-                </button>
-                <button
-                  id="setting_button_plus_exposure"
-                  onclick="setCameraClickButtonSettings(true, 'exposure')"
-                  disabled="true"
-                >
-                  <span>+</span>
-                </button>
-              </div>
-            </div>
-            <div class="setting_button_container">
-              <span>Saturation: 0</span>
-              <input
-                id="setting_drag_saturation"
-                type="range"
-                min="-50"
-                max="50"
-                value="0"
-                step="5"
-                oninput="setCameraDraggerSettings('saturation')"
-                disabled="true"
-              />
-              <div id="setting_click_buttons">
-                <button
-                  id="setting_button_minus_saturation"
-                  onclick="setCameraClickButtonSettings(false, 'saturation')"
-                  disabled="true"
-                >
-                  <span>-</span>
-                </button>
-                <button
-                  id="setting_button_plus_saturation"
-                  onclick="setCameraClickButtonSettings(true, 'saturation')"
-                  disabled="true"
-                >
-                  <span>+</span>
-                </button>
-              </div>
-            </div>
-          </div>
+        <div id="other_parameters_tabs">
+          <button
+            id="main_tab"
+            onclick="manageTabs('main_tab', 'main_template')"
+          >
+            <span> Main </span>
+          </button>
+          <button
+            id="settings_tab"
+            onclick="manageTabs('settings_tab', 'settings_template')"
+          >
+            <span> Settings </span>
+          </button>
+          <button id="operations_tab">
+            <span> Operations </span>
+          </button>
         </div>
       </div>
     </div>
+
+    <!-- Templates to avoid to render all button lists -->
+    <template id="main_template">
+      <div id="click_button_list">
+        <button id="camera_play_button" onclick="startStopCamera()">
+          <svg width="15" height="15">
+            <image
+              xlink:href="{{ url_for('static', filename='svg/play.svg') }}"
+              alt="Play button"
+              width="15"
+              height="15"
+            />
+          </svg>
+          <span> Play </span>
+        </button>
+        <button
+          id="camera_shot_button"
+          onclick="captureImage()"
+          disabled="true"
+        >
+          <svg width="15" height="15">
+            <image
+              xlink:href="{{ url_for('static', filename='svg/shot.svg') }}"
+              alt="Shot button"
+              width="15"
+              height="15"
+            />
+          </svg>
+          <span> Shot </span>
+        </button>
+      </div>
+
+      <!-- image processing button samples -->
+      <div id="image_processing_button_container">
+        <button>White balance</button>
+        <button>Color to grey</button>
+        <button>Canny edge map</button>
+      </div>
+    </template>
+
+    <template id="settings_template">
+      <!-- It would be better to get from the back the min and max value of the current camera settings
+              to set it in js for the input but it doesn't seem to be possible to get these data ?
+          -->
+      <div id="drag_button_list">
+        <div class="setting_button_container">
+          <span>Exposure: 0</span>
+          <!-- oninput to execute function while moving cursor -->
+          <input
+            id="setting_drag_exposure"
+            type="range"
+            min="-3"
+            max="3"
+            value="0"
+            step="1"
+            oninput="setCameraDraggerSettings('exposure')"
+            disabled="true"
+          />
+          <div id="setting_click_buttons">
+            <button
+              id="setting_button_minus_exposure"
+              onclick="setCameraClickButtonSettings(false, 'exposure')"
+              disabled="true"
+            >
+              <span>-</span>
+            </button>
+            <button
+              id="setting_button_plus_exposure"
+              onclick="setCameraClickButtonSettings(true, 'exposure')"
+              disabled="true"
+            >
+              <span>+</span>
+            </button>
+          </div>
+        </div>
+        <div class="setting_button_container">
+          <span>Saturation: 0</span>
+          <input
+            id="setting_drag_saturation"
+            type="range"
+            min="-50"
+            max="50"
+            value="0"
+            step="5"
+            oninput="setCameraDraggerSettings('saturation')"
+            disabled="true"
+          />
+          <div id="setting_click_buttons">
+            <button
+              id="setting_button_minus_saturation"
+              onclick="setCameraClickButtonSettings(false, 'saturation')"
+              disabled="true"
+            >
+              <span>-</span>
+            </button>
+            <button
+              id="setting_button_plus_saturation"
+              onclick="setCameraClickButtonSettings(true, 'saturation')"
+              disabled="true"
+            >
+              <span>+</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
     <script>
       //url_for are defined here since we can't use them in external .js file
       let generateCameraUrl = "{{ url_for('generate_camera') }}";

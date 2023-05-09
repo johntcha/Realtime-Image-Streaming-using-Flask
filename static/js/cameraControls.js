@@ -29,6 +29,12 @@ let green_play_color = "#4fa165";
 let stop_red_color = "#D2042D";
 let clickableValueExposure = 0;
 let clickableValueSaturation = 0;
+let currentTabId = "main_tab";
+let crDarkBlueColor = "#122d53";
+let crBlueColor = "#4674b2";
+
+// set the default action buttons on load
+manageTabs("main_tab", "main_template");
 
 /**
  *
@@ -231,4 +237,29 @@ function informWithSnackbar(textContent, backgroundColor) {
 function settingNewText(name, value, span) {
   let newText = `${name}: ${value}`;
   span.textContent = newText.charAt(0).toUpperCase() + newText.slice(1);
+}
+
+/**
+ * Create a copy of the template button list container to add to the div element
+ * @param {string} buttonContainerId
+ * @param {string} templateId
+ */
+function setButtonList(templateId) {
+  let buttonContainer = document.getElementById("buttons_container");
+  let templateContentClone = document
+    .getElementById(templateId)
+    .content.cloneNode(true);
+  buttonContainer.replaceChildren(templateContentClone);
+}
+
+/**
+ * Action on tab changing
+ * @param {string} selectedTabId
+ * @param {string} templateId
+ */
+function manageTabs(selectedTabId, templateId) {
+  document.getElementById(currentTabId).style.backgroundColor = crDarkBlueColor;
+  document.getElementById(selectedTabId).style.backgroundColor = crBlueColor;
+  currentTabId = selectedTabId;
+  setButtonList(templateId);
 }

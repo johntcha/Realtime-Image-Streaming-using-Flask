@@ -24,14 +24,47 @@ body #main_content h1 {
     font-size: 46px;
   }
 }
-body #main_content #camera_container {
+body #main_content #television_container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+body #main_content #television_container #other_parameters_tabs {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2px;
+  padding-top: 32px;
+}
+@media (max-height: 500px) {
+  body #main_content #television_container #other_parameters_tabs {
+    padding-top: 16px;
+  }
+}
+body #main_content #television_container #other_parameters_tabs button {
+  outline: 2px solid black;
+  background: #122d53;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+body #main_content #television_container #other_parameters_tabs button span {
+  writing-mode: vertical-rl;
+  font-size: 2.25vw;
+}
+@media (min-width: 1200px) {
+  body #main_content #television_container #other_parameters_tabs button span {
+    font-size: 16px;
+  }
+}
+body #main_content #television_container #camera_container {
   display: flex;
   flex-direction: column;
   width: 70%;
   max-width: 700px;
   position: relative;
 }
-body #main_content #camera_container #snackbar {
+body #main_content #television_container #camera_container #snackbar {
   outline: 2px solid black;
   background: #122d53;
   position: absolute;
@@ -52,17 +85,17 @@ body #main_content #camera_container #snackbar {
   z-index: 1;
 }
 @media (max-height: 500px) {
-  body #main_content #camera_container #snackbar {
+  body #main_content #television_container #camera_container #snackbar {
     margin-top: 21.33333px;
   }
 }
 @media (min-width: 1400px) {
-  body #main_content #camera_container #snackbar {
+  body #main_content #television_container #camera_container #snackbar {
     font-size: 16px;
     padding: 4px;
   }
 }
-body #main_content #camera_container #settings_info_box {
+body #main_content #television_container #camera_container #settings_info_box {
   display: none;
   position: absolute;
   width: 38%;
@@ -78,11 +111,15 @@ body #main_content #camera_container #settings_info_box {
   padding: 8px;
 }
 @media (min-width: 950px) {
-  body #main_content #camera_container #settings_info_box {
+  body
+    #main_content
+    #television_container
+    #camera_container
+    #settings_info_box {
     font-size: 14px;
   }
 }
-body #main_content #camera_container #buttons_container {
+body #main_content #television_container #camera_container #buttons_container {
   display: flex;
   justify-content: space-between;
   padding: 3%;
@@ -92,17 +129,27 @@ body #main_content #camera_container #buttons_container {
   aspect-ratio: 10/1;
 }
 @media (max-height: 500px) {
-  body #main_content #camera_container #buttons_container {
+  body
+    #main_content
+    #television_container
+    #camera_container
+    #buttons_container {
     padding: 1%;
   }
 }
-body #main_content #camera_container #buttons_container #click_button_list {
+body
+  #main_content
+  #television_container
+  #camera_container
+  #buttons_container
+  #click_button_list {
   display: flex;
   padding-left: 10%;
   gap: 35%;
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #click_button_list
@@ -119,6 +166,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #click_button_list
@@ -129,6 +177,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #click_button_list
@@ -139,6 +188,7 @@ body
 @media (max-width: 500px) {
   body
     #main_content
+    #television_container
     #camera_container
     #buttons_container
     #click_button_list
@@ -147,7 +197,12 @@ body
     display: none;
   }
 }
-body #main_content #camera_container #buttons_container #drag_button_list {
+body
+  #main_content
+  #television_container
+  #camera_container
+  #buttons_container
+  #drag_button_list {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -155,6 +210,7 @@ body #main_content #camera_container #buttons_container #drag_button_list {
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #drag_button_list
@@ -167,6 +223,7 @@ body
 @media (max-width: 750px) {
   body
     #main_content
+    #television_container
     #camera_container
     #buttons_container
     #drag_button_list
@@ -176,6 +233,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #drag_button_list
@@ -186,6 +244,7 @@ body
 @media (max-width: 750px) {
   body
     #main_content
+    #television_container
     #camera_container
     #buttons_container
     #drag_button_list
@@ -197,6 +256,7 @@ body
 @media (min-width: 750px) {
   body
     #main_content
+    #television_container
     #camera_container
     #buttons_container
     #drag_button_list
@@ -207,6 +267,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #drag_button_list
@@ -219,6 +280,7 @@ body
 @media (max-width: 750px) {
   body
     #main_content
+    #television_container
     #camera_container
     #buttons_container
     #drag_button_list
@@ -229,6 +291,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #drag_button_list
@@ -239,6 +302,7 @@ body
 @media (max-width: 750px) {
   body
     #main_content
+    #television_container
     #camera_container
     #buttons_container
     #drag_button_list
@@ -249,6 +313,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #drag_button_list
@@ -261,6 +326,7 @@ body
 }
 body
   #main_content
+  #television_container
   #camera_container
   #buttons_container
   #drag_button_list
@@ -271,14 +337,14 @@ body
   color: #122d53;
   font-size: 2vw;
 }
-body #main_content img {
+body #main_content #television_container img {
   border-radius: 36px;
   border: 32px solid #122d53;
   outline: 4px solid black;
   aspect-ratio: 10/7;
 }
 @media (max-height: 500px) {
-  body #main_content img {
+  body #main_content #television_container img {
     aspect-ratio: 16/8;
     border: 16px solid #122d53;
   }
