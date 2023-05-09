@@ -1,6 +1,13 @@
 import os
 import time
 import cv2
+from dotenv import dotenv_values
+
+# get .env values as a dict
+process = dotenv_values(".env")
+DEFAULT_CAMERA = int(process["DEFAULT_CAMERA"])
+EXPOSURE_DEFAULT_VALUE = int(process["EXPOSURE_DEFAULT_VALUE"])
+SATURATION_DEFAULT_VALUE = int(process["SATURATION_DEFAULT_VALUE"])
 
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
 # displays a black screen on browser and frame is very slowly generated
@@ -9,7 +16,7 @@ import cv2
 
 # although the cv2.VideoCapture(0).get() is not returning the real current value
 # I will be using this one to stream the camera and see the parameter changements on browser
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(DEFAULT_CAMERA)
 
 # display camera settings window
 # but seems to be only working with cv2.CAP_DSHOW parameter on VideoCapture
@@ -27,9 +34,6 @@ if not os.path.exists("pictures"):
 # get current directory to find pictures folder
 currentDirectory = os.path.dirname(os.path.abspath(__file__))
 directoryPath = f"{currentDirectory}/pictures"
-
-EXPOSURE_DEFAULT_VALUE = -4
-SATURATION_DEFAULT_VALUE = 32
 
 
 def generate_camera_stream():
@@ -104,4 +108,7 @@ def set_camera_settings(setting_key, setting_value):
 
 def get_default_settings():
     """Returns the default settings values"""
-    return {"exposure": EXPOSURE_DEFAULT_VALUE, "saturation": SATURATION_DEFAULT_VALUE}
+    return {
+        "exposure": process["EXPOSURE_DEFAULT_VALUE"],
+        "saturation": process["SATURATION_DEFAULT_VALUE"],
+    }
