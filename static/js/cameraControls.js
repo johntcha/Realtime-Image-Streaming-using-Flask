@@ -102,6 +102,7 @@ let crBlueColor = "#4674b2";
 
 /*********************************Set the default actions on load*********************************/
 manageTabs("main");
+manageDragMouvement();
 
 /*********************************Data management functions*********************************/
 
@@ -159,9 +160,11 @@ async function resetOnStop(isStreaming) {
   }
 
   // set default settings values and hide the info box if not streaming
+  const stream = document.getElementById("camera_feed");
   if (isStreaming) {
     const { exposure, saturation, height, width, zoom } =
       await fetchDefaultValues();
+    stream.style.cursor = "move";
     settingsInfoBox.style.display = "flex";
     exposureInfoSpan.textContent = `Exposure: ${exposure}`;
     saturationInfoSpan.textContent = `Saturation: ${saturation}`;
@@ -170,6 +173,7 @@ async function resetOnStop(isStreaming) {
     zoomInfoSpan.textContent = `Zoom: x${zoom}`;
   } else {
     settingsInfoBox.style.display = "none";
+    stream.style.cursor = "unset";
   }
   if (!isStreaming) {
     // reset settings on stop
@@ -354,4 +358,37 @@ function manageTabs(tabName) {
   document.getElementById(`${tabName}_tab`).style.backgroundColor = crBlueColor;
   currentTabId = selectedTabId;
   setButtonList(`${tabName}_template`);
+}
+
+/**
+ * Enable stream visualization mouvement on click and drag
+ */
+function manageDragMouvement() {
+  const stream = document.getElementById("camera_feed");
+  const container = document.getElementById("camera_feed_container");
+
+  let isDragging = false;
+  let startX, startY, scrollLeft, scrollTop;
+  stream.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.pageX - container.offsetLeft;
+    startY = e.pageY - container.offsetTop;
+    scrollLeft = container.scrollLeft;
+    scrollTop = container.scrollTop;
+  });
+
+  window.addEventListener("mouseup", () => {
+    isDragging = false;
+  });
+
+  stream.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const y = e.pageY - container.offsetTop;
+    const deltaX = x - startX;
+    const deltaY = y - startY;
+    container.scrollLeft = scrollLeft - deltaX;
+    container.scrollTop = scrollTop - deltaY;
+  });
 }
