@@ -324,7 +324,7 @@ function informWithSnackbar(textContent, backgroundColor) {
  * @param {HTMLSpanElement} span
  */
 function settingNewText(name, value, span) {
-  let newText = `${name}: ${value}`;
+  let newText = `${name}: ${name === "zoom" ? "x" : ""}${value}`;
   span.textContent = newText.charAt(0).toUpperCase() + newText.slice(1);
 }
 
