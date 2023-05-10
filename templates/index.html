@@ -20,12 +20,16 @@
           <div id="settings_info_box">
             <span id="info_exposure"></span>
             <span id="info_saturation"></span>
+            <span id="info_height"></span>
+            <span id="info_width"></span>
             <span id="info_timestamp">Last capturing timing stamp: none</span>
           </div>
-          <img
-            id="camera_feed"
-            src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
-          />
+          <div id="camera_feed_container">
+            <img
+              id="camera_feed"
+              src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
+            />
+          </div>
           <div id="buttons_container"></div>
         </div>
         <div id="other_parameters_tabs">
@@ -42,7 +46,8 @@
       </div>
     </div>
 
-    <!-- Templates to avoid to render all button lists -->
+    <!-- Templates to avoid to render all button lists 
+         They are used to be displayed on the <div id="buttons_container"></div>-->
     <template id="main_template">
       <div id="click_button_list">
         <button
@@ -99,20 +104,20 @@
             max="3"
             value="0"
             step="1"
-            oninput="setCameraDraggerSettings('exposure', 'settings_template')"
+            oninput="setCameraDraggerValues('setting', 'exposure', 'settings_template')"
             disabled="true"
           />
-          <div id="setting_click_buttons">
+          <div class="setting_click_buttons">
             <button
               id="setting_button_minus_exposure"
-              onclick="setCameraClickButtonSettings(false, 'exposure', 'settings_template')"
+              onclick="setCameraClickButtonSettings('setting', -1, 'exposure', 'settings_template')"
               disabled="true"
             >
               <span>-</span>
             </button>
             <button
               id="setting_button_plus_exposure"
-              onclick="setCameraClickButtonSettings(true, 'exposure', 'settings_template')"
+              onclick="setCameraClickButtonSettings('setting', 1, 'exposure', 'settings_template')"
               disabled="true"
             >
               <span>+</span>
@@ -128,20 +133,116 @@
             max="50"
             value="0"
             step="5"
-            oninput="setCameraDraggerSettings('saturation', 'settings_template')"
+            oninput="setCameraDraggerValues('setting', 'saturation', 'settings_template')"
             disabled="true"
           />
-          <div id="setting_click_buttons">
+          <div class="setting_click_buttons">
             <button
               id="setting_button_minus_saturation"
-              onclick="setCameraClickButtonSettings(false, 'saturation', 'settings_template')"
+              onclick="setCameraClickButtonSettings('setting', -5, 'saturation', 'settings_template')"
               disabled="true"
             >
               <span>-</span>
             </button>
             <button
               id="setting_button_plus_saturation"
-              onclick="setCameraClickButtonSettings(true, 'saturation', 'settings_template')"
+              onclick="setCameraClickButtonSettings('setting', 5, 'saturation', 'settings_template')"
+              disabled="true"
+            >
+              <span>+</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template id="operations_template">
+      <div id="drag_button_list">
+        <div id="size_buttons_container">
+          <div class="operation_button_container">
+            <span>Height: 0</span>
+            <!-- oninput to execute function while moving cursor -->
+            <input
+              id="operation_drag_height"
+              type="range"
+              min="-250"
+              max="250"
+              value="0"
+              step="10"
+              oninput="setCameraDraggerValues('operation', 'height', 'operations_template')"
+              disabled="true"
+            />
+            <div class="operation_click_buttons">
+              <button
+                id="operation_button_minus_height"
+                onclick="setCameraClickButtonSettings('operation', -10, 'height', 'operations_template')"
+                disabled="true"
+              >
+                <span>-</span>
+              </button>
+              <button
+                id="operation_button_plus_height"
+                onclick="setCameraClickButtonSettings('operation', 10, 'height', 'operations_template')"
+                disabled="true"
+              >
+                <span>+</span>
+              </button>
+            </div>
+          </div>
+          <div class="operation_button_container">
+            <span>Width: 0</span>
+            <!-- oninput to execute function while moving cursor -->
+            <input
+              id="operation_drag_width"
+              type="range"
+              min="-250"
+              max="250"
+              value="0"
+              step="10"
+              oninput="setCameraDraggerValues('operation', 'width', 'operations_template')"
+              disabled="true"
+            />
+            <div class="operation_click_buttons">
+              <button
+                id="operation_button_minus_width"
+                onclick="setCameraClickButtonSettings('operation', -10, 'width', 'operations_template')"
+                disabled="true"
+              >
+                <span>-</span>
+              </button>
+              <button
+                id="operation_button_plus_width"
+                onclick="setCameraClickButtonSettings('operation', 10, 'width', 'operations_template')"
+                disabled="true"
+              >
+                <span>+</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="operation_button_container">
+          <span>Zoom: 0</span>
+          <input
+            id="operation_drag_zoom"
+            type="range"
+            min="-50"
+            max="50"
+            value="0"
+            step="5"
+            oninput="setCameraDraggerValues('operation', 'zoom', 'operations_template')"
+            disabled="true"
+          />
+          <div class="operation_click_buttons">
+            <button
+              id="operation_button_minus_zoom"
+              onclick="setCameraClickButtonSettings('operation', -1, 'zoom', 'operations_template')"
+              disabled="true"
+            >
+              <span>-</span>
+            </button>
+            <button
+              id="operation_button_plus_zoom"
+              onclick="setCameraClickButtonSettings('operation', 1, 'zoom', 'operations_template')"
               disabled="true"
             >
               <span>+</span>

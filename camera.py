@@ -8,7 +8,10 @@ process = dotenv_values(".env")
 DEFAULT_CAMERA = int(process["DEFAULT_CAMERA"])
 EXPOSURE_DEFAULT_VALUE = int(process["EXPOSURE_DEFAULT_VALUE"])
 SATURATION_DEFAULT_VALUE = int(process["SATURATION_DEFAULT_VALUE"])
+STREAM_WIDTH = int(process["STREAM_WIDTH"])
+STREAM_HEIGHT = int(process["STREAM_HEIGHT"])
 
+operations = {"width": STREAM_WIDTH, "height": STREAM_HEIGHT}
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
 # displays a black screen on browser and frame is very slowly generated
 # maybe camera hardware issue ?
@@ -39,8 +42,11 @@ directoryPath = f"{currentDirectory}/pictures"
 def generate_camera_stream():
     """Get camera frames, encode it and send it in chunks"""
     # setting default value where the stream quality is stable
+    global operations
+    operations = {"width": STREAM_WIDTH, "height": STREAM_HEIGHT}
     cap.set(cv2.CAP_PROP_EXPOSURE, EXPOSURE_DEFAULT_VALUE)
     cap.set(cv2.CAP_PROP_SATURATION, SATURATION_DEFAULT_VALUE)
+
     while True:
         # capture frame by frame
         is_success, frame = cap.read()
@@ -49,7 +55,8 @@ def generate_camera_stream():
 
         # encode the image format into streaming data
         # jpeg format good compression and reasonable image quality
-        ret, buffer = cv2.imencode(".jpg", frame)
+        resized = cv2.resize(frame, (operations["width"], operations["height"]))
+        ret, buffer = cv2.imencode(".jpg", resized)
         if not ret:
             raise ValueError("Couldn't encode the frame as jpeg")
 
@@ -78,6 +85,7 @@ def capture_image():
 
 def set_camera_settings(setting_key, setting_value):
     """Change the camera exposure and saturation settings and return current settings value"""
+    global operations
     settings = {
         "exposure": {
             "prop": cv2.CAP_PROP_EXPOSURE,
@@ -89,16 +97,30 @@ def set_camera_settings(setting_key, setting_value):
             "defaultValue": SATURATION_DEFAULT_VALUE,
             "currentValue": SATURATION_DEFAULT_VALUE,
         },
+        "height": {
+            "defaultValue": STREAM_HEIGHT,
+            "currentValue": operations["height"],
+        },
+        "width": {
+            "defaultValue": STREAM_WIDTH,
+            "currentValue": operations["width"],
+        },
     }
     # it would be easier to get the current value with cap.get()
     # but it is not working without cv2.CAP_DSHOW
     settings[setting_key]["currentValue"] = (
         setting_value + settings[setting_key]["defaultValue"]
     )
-    cap.set(
-        settings[setting_key]["prop"],
-        settings[setting_key]["currentValue"],
-    )
+    # updating values in camera
+    if "prop" in settings[setting_key]:
+        cap.set(
+            settings[setting_key]["prop"],
+            settings[setting_key]["currentValue"],
+        )
+    # if prop not present, it means we have to attribute the value with =
+    else:
+        operations[setting_key] = settings[setting_key]["currentValue"]
+
     # creating new dict with all settings name paired with updated value
     real_time_settings = {}
     for key, value in settings.items():
@@ -106,9 +128,11 @@ def set_camera_settings(setting_key, setting_value):
     return real_time_settings
 
 
-def get_default_settings():
+def get_default_values():
     """Returns the default settings values"""
     return {
         "exposure": process["EXPOSURE_DEFAULT_VALUE"],
         "saturation": process["SATURATION_DEFAULT_VALUE"],
+        "width": process["STREAM_WIDTH"],
+        "height": process["STREAM_HEIGHT"],
     }

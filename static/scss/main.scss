@@ -158,7 +158,18 @@ body {
             display: flex;
             justify-content: center;
             gap: 15%;
-            .setting_button_container {
+            #size_buttons_container {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              gap: 8px;
+              @media (max-width: 750px) {
+                flex-direction: row;
+              }
+            }
+
+            .setting_button_container,
+            .operation_button_container {
               display: flex;
               gap: 4px;
               align-items: center;
@@ -185,7 +196,8 @@ body {
                 }
               }
 
-              #setting_click_buttons {
+              .setting_click_buttons,
+              .operation_click_buttons {
                 display: flex;
                 @media (max-width: 750px) {
                   gap: 4px;
@@ -201,18 +213,40 @@ body {
                 }
               }
             }
+            .operation_button_container {
+              @media (max-width: 500px) {
+                gap: 4px;
+              }
+              span {
+                @media (max-width: 500px) {
+                  font-size: $font_size;
+                }
+              }
+              .operation_click_buttons {
+                @media (max-width: 500px) {
+                  gap: 1px;
+                }
+              }
+            }
           }
         }
       }
 
-      img {
+      #camera_feed_container {
         border-radius: 3 * $border_radius_size;
         border: $img_border_size solid $cr_dark_blue;
         outline: $outline_size solid black;
         aspect-ratio: 10/7;
+        overflow: hidden;
+        text-align: center;
+        background: black;
         @media (max-height: 500px) {
           aspect-ratio: 16/8;
           border: $img_border_size/2 solid $cr_dark_blue;
+        }
+        img {
+          height: 100%;
+          width: 100%;
         }
       }
     }
