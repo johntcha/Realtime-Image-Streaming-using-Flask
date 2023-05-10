@@ -4,7 +4,7 @@ from flask_assets import Bundle, Environment
 from camera import (
     capture_image,
     generate_camera_stream,
-    get_default_settings,
+    get_default_values,
     set_camera_settings,
 )
 
@@ -54,13 +54,13 @@ def camera_settings():
     """
     for key, value in request.json.items():
         setting_key = key
-        setting_value = int(value)
+        setting_value = float(value)
     return set_camera_settings(setting_key, setting_value)
 
 
-@app.route("/default_settings", methods=["GET"])
-def default_settings():
+@app.route("/default_values", methods=["GET"])
+def default_values():
     """
-    Fetch the default settings values
+    Fetch the default values
     """
-    return get_default_settings()
+    return get_default_values()

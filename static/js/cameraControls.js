@@ -1,15 +1,58 @@
-// variables
+/*********************************Variables*********************************/
+let mainTemplateContent = document.getElementById("main_template").content;
+let settingsTemplateContent =
+  document.getElementById("settings_template").content;
+let operationsTemplateContent = document.getElementById(
+  "operations_template"
+).content;
 let cameraFeed = document.getElementById("camera_feed");
-let cameraPlayButton = document.getElementById("camera_play_button");
-let cameraShotButton = document.getElementById("camera_shot_button");
-let exposureDragger = document.getElementById("setting_drag_exposure");
-let saturationDragger = document.getElementById("setting_drag_saturation");
-let minusExposure = document.getElementById("setting_button_minus_exposure");
-let plusExposure = document.getElementById("setting_button_plus_exposure");
-let minusSaturation = document.getElementById(
+let cameraPlayButton = mainTemplateContent.getElementById("camera_play_button");
+let cameraShotButton = mainTemplateContent.getElementById("camera_shot_button");
+let exposureDragger = settingsTemplateContent.getElementById(
+  "setting_drag_exposure"
+);
+let saturationDragger = settingsTemplateContent.getElementById(
+  "setting_drag_saturation"
+);
+let minusExposure = settingsTemplateContent.getElementById(
+  "setting_button_minus_exposure"
+);
+let plusExposure = settingsTemplateContent.getElementById(
+  "setting_button_plus_exposure"
+);
+let plusSaturation = settingsTemplateContent.getElementById(
+  "setting_button_plus_saturation"
+);
+let minusSaturation = settingsTemplateContent.getElementById(
   "setting_button_minus_saturation"
 );
-let plusSaturation = document.getElementById("setting_button_plus_saturation");
+let heightDragger = operationsTemplateContent.getElementById(
+  "operation_drag_height"
+);
+let widthDragger = operationsTemplateContent.getElementById(
+  "operation_drag_width"
+);
+let zoomDragger = operationsTemplateContent.getElementById(
+  "operation_drag_zoom"
+);
+let plusHeight = operationsTemplateContent.getElementById(
+  "operation_button_plus_height"
+);
+let minusHeight = operationsTemplateContent.getElementById(
+  "operation_button_minus_height"
+);
+let plusWidth = operationsTemplateContent.getElementById(
+  "operation_button_plus_width"
+);
+let minusWidth = operationsTemplateContent.getElementById(
+  "operation_button_minus_width"
+);
+let plusZoom = operationsTemplateContent.getElementById(
+  "operation_button_plus_zoom"
+);
+let minusZoom = operationsTemplateContent.getElementById(
+  "operation_button_minus_zoom"
+);
 const disableableHTMLComponents = [
   cameraShotButton,
   exposureDragger,
@@ -18,100 +61,74 @@ const disableableHTMLComponents = [
   plusExposure,
   minusSaturation,
   plusSaturation,
+  heightDragger,
+  widthDragger,
+  zoomDragger,
+  plusHeight,
+  minusHeight,
+  plusWidth,
+  minusWidth,
+  plusZoom,
+  minusZoom,
 ];
+const draggerInputs = [
+  { type: "exposure", input: exposureDragger },
+  { type: "saturation", input: saturationDragger },
+  { type: "height", input: heightDragger },
+  { type: "width", input: widthDragger },
+  { type: "zoom", input: zoomDragger },
+];
+
 let exposureInfoSpan = document.getElementById("info_exposure");
 let saturationInfoSpan = document.getElementById("info_saturation");
+let heightInfoSpan = document.getElementById("info_height");
+let widthInfoSpan = document.getElementById("info_width");
+let zoomInfoSpan = document.getElementById("info_zoom");
 let timeStampInfoSpan = document.getElementById("info_timestamp");
 let settingsInfoBox = document.getElementById("settings_info_box");
 let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
 let green_play_color = "#4fa165";
 let stop_red_color = "#D2042D";
-let clickableValueExposure = 0;
-let clickableValueSaturation = 0;
+let clickableValues = {
+  exposure: 0,
+  saturation: 0,
+  height: 0,
+  width: 0,
+  zoom: 0,
+};
+let currentTabId = "main_tab";
+let crDarkBlueColor = "#122d53";
+let crBlueColor = "#4674b2";
+
+/*********************************Set the default actions on load*********************************/
+manageTabs("main");
+manageDragMouvement();
+
+/*********************************Data management functions*********************************/
 
 /**
  *
  * @returns object with default settings and their values
  */
-async function fetchDefaultSettings() {
+async function fetchDefaultValues() {
   let textContent = "";
   let backgroundColor = "";
   try {
-    const response = await fetch("/default_settings", {
+    const response = await fetch("/default_values", {
       method: "GET",
     });
     return await response.json();
   } catch (error) {
     console.error(error);
-    textContent = "An error occured while fetching default settings values";
+    textContent = "An error occured while fetching default values";
     backgroundColor = stop_red_color;
   }
   informWithSnackbar(textContent, backgroundColor);
 }
 
 /**
- * function fetching the camera feed according to the play/stop button
- * changing the button if the feed is displayed or not
- */
-async function startStopCamera() {
-  isStreaming = !isStreaming;
-  await resetOnStop(isStreaming);
-  cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
-  // start/stop button management
-  isStreaming
-    ? (cameraPlayButton.style.backgroundColor = stop_red_color)
-    : (cameraPlayButton.style.backgroundColor = green_play_color);
-  cameraPlayButton.querySelector("span").innerText = isStreaming
-    ? "Stop"
-    : "Play";
-  cameraPlayButton
-    .querySelector("image")
-    .setAttribute("href", isStreaming ? stopSvgPath : playSvgPath);
-}
-
-/**
- * Disable buttons and reset settings values on stop stream
- * @param {boolean} isStreaming
- */
-async function resetOnStop(isStreaming) {
-  // picture button and settings disabled when not streaming
-  for (const button of disableableHTMLComponents) {
-    button.disabled = !isStreaming;
-  }
-
-  // set default settings values and hide the info box if not streaming
-  if (isStreaming) {
-    const { exposure, saturation } = await fetchDefaultSettings();
-    let currentValueExposure = exposure;
-    let currentValueSaturation = saturation;
-    settingsInfoBox.style.display = "flex";
-    exposureInfoSpan.textContent = `Exposure: ${currentValueExposure}`;
-    saturationInfoSpan.textContent = `Saturation: ${currentValueSaturation}`;
-  } else {
-    settingsInfoBox.style.display = "none";
-  }
-  // reset settings on stop
-  exposureDragger.value = 0;
-  saturationDragger.value = 0;
-  clickableValueExposure = 0;
-  clickableValueSaturation = 0;
-  if (!isStreaming) {
-    settingNewText(
-      "exposure",
-      exposureDragger.value,
-      exposureDragger.previousElementSibling
-    );
-    settingNewText(
-      "saturation",
-      saturationDragger.value,
-      saturationDragger.previousElementSibling
-    );
-  }
-}
-
-/**
- * send post request to capture image and get message and timestamp of the capture
+ * Send post request to capture image and get message and timestamp of the capture
  * @returns object with message and timestamp
  */
 async function captureImage() {
@@ -134,28 +151,74 @@ async function captureImage() {
 }
 
 /**
+ * Disable buttons and reset settings values on stop stream
+ * @param {boolean} isStreaming
+ */
+async function resetOnStop(isStreaming) {
+  // picture button and settings disabled when not streaming
+  for (const button of disableableHTMLComponents) {
+    button.disabled = !isStreaming;
+  }
+
+  // set default settings values and hide the info box if not streaming
+  const stream = document.getElementById("camera_feed");
+  if (isStreaming) {
+    const { exposure, saturation, height, width, zoom } =
+      await fetchDefaultValues();
+    stream.style.cursor = "move";
+    settingsInfoBox.style.display = "flex";
+    exposureInfoSpan.textContent = `Exposure: ${exposure}`;
+    saturationInfoSpan.textContent = `Saturation: ${saturation}`;
+    heightInfoSpan.textContent = `Height: ${height}`;
+    widthInfoSpan.textContent = `Width: ${width}`;
+    zoomInfoSpan.textContent = `Zoom: x${zoom}`;
+  } else {
+    settingsInfoBox.style.display = "none";
+    stream.style.cursor = "unset";
+  }
+  if (!isStreaming) {
+    // reset settings on stop
+    Object.keys(clickableValues).forEach((k) => (k = 0));
+    for (const dragger of draggerInputs) {
+      dragger.input.value = 0;
+      settingNewText(
+        dragger.type,
+        dragger.input.value,
+        dragger.input.previousElementSibling
+      );
+    }
+  }
+}
+
+/**
  * Getting one dragger setting and sending it to the back
  * Also displaying the added or removed value
- * @param {string} settingName
+ * @param {string} typeValue setting/operation/etc...
+ * @param {string} valueName height/width/saturation/etc...
+ * @param {string} templateId <template>'s id
  */
-async function setCameraDraggerSettings(settingName) {
-  let modifiedSettingDrag = document.getElementById(
-    `setting_drag_${settingName}`
+async function setCameraDraggerValues(typeValue, valueName, templateId) {
+  let modifiedValueDrag = document.getElementById(
+    `${typeValue}_drag_${valueName}`
   );
-  let correspondingSpan = modifiedSettingDrag.previousElementSibling;
-
-  settingNewText(settingName, modifiedSettingDrag.value, correspondingSpan);
-  let param = { [settingName]: modifiedSettingDrag.value };
-
+  let templateContent = document.getElementById(templateId).content;
+  let templateValueDrag = templateContent.getElementById(
+    `${typeValue}_drag_${valueName}`
+  );
+  let templateCorrespondingSpan = templateValueDrag.previousElementSibling;
+  settingNewText(valueName, modifiedValueDrag.value, templateCorrespondingSpan);
+  let param = { [valueName]: modifiedValueDrag.value };
   try {
     const response = await fetch("/camera_settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(param),
     });
-    const settings = await response.json();
-    let infoSpan = document.getElementById(`info_${settingName}`);
-    settingNewText(settingName, settings[settingName], infoSpan);
+    const values = await response.json();
+    let infoSpan = document.getElementById(`info_${valueName}`);
+    settingNewText(valueName, values[valueName], infoSpan);
+    templateValueDrag.value = modifiedValueDrag.value;
+    setButtonList(templateId);
   } catch (error) {
     console.error(error);
     informWithSnackbar(
@@ -168,24 +231,29 @@ async function setCameraDraggerSettings(settingName) {
 /**
  * Getting one click button setting and sending it to the back
  * Also displaying the added or removed value
- * @param {boolean} increase
- * @param {string} settingName
+ * @param {string} typeValue setting/operation/etc...
+ * @param {number} value number to increment
+ * @param {string} valueName height/width/saturation/etc...
+ * @param {string} templateId <template>'s id
  */
-async function setCameraClickButtonSettings(increase, settingName) {
-  let correspondingSpan = document.getElementById(
-    `setting_drag_${settingName}`
+async function setCameraClickButtonSettings(
+  typeValue,
+  value,
+  valueName,
+  templateId
+) {
+  let templateContent = document.getElementById(templateId).content;
+  let templateCorrespondingSpan = templateContent.getElementById(
+    `${typeValue}_drag_${valueName}`
   ).previousElementSibling;
-  let value = 0;
-  if (settingName === "exposure") {
-    clickableValueExposure += increase ? 1 : -1;
-    value = clickableValueExposure;
-  }
-  if (settingName === "saturation") {
-    clickableValueSaturation += increase ? 5 : -5;
-    value = clickableValueSaturation;
-  }
-  settingNewText(settingName, value, correspondingSpan);
-  let param = { [settingName]: value };
+  clickableValues[valueName] += value;
+
+  settingNewText(
+    valueName,
+    clickableValues[valueName],
+    templateCorrespondingSpan
+  );
+  let param = { [valueName]: clickableValues[valueName] };
 
   try {
     const response = await fetch("/camera_settings", {
@@ -194,8 +262,9 @@ async function setCameraClickButtonSettings(increase, settingName) {
       body: JSON.stringify(param),
     });
     const settings = await response.json();
-    let infoSpan = document.getElementById(`info_${settingName}`);
-    settingNewText(settingName, settings[settingName], infoSpan);
+    let infoSpan = document.getElementById(`info_${valueName}`);
+    settingNewText(valueName, settings[valueName], infoSpan);
+    setButtonList(templateId);
   } catch (error) {
     console.error(error);
     informWithSnackbar(
@@ -205,9 +274,36 @@ async function setCameraClickButtonSettings(increase, settingName) {
   }
 }
 
+/*********************************Display management functions*********************************/
+
+/**
+ * function fetching the camera feed according to the play/stop button
+ * changing the button if the feed is displayed or not
+ * @param {string} templateId <template>'s id
+ */
+async function startStopCamera(templateId) {
+  isStreaming = !isStreaming;
+  await resetOnStop(isStreaming);
+  cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
+  cameraFeed.style.height = isStreaming ? "unset" : "100%";
+  cameraFeed.style.width = isStreaming ? "unset" : "100%";
+  // start/stop button management
+  isStreaming
+    ? (cameraPlayButton.style.backgroundColor = stop_red_color)
+    : (cameraPlayButton.style.backgroundColor = green_play_color);
+  cameraPlayButton.querySelector("span").innerText = isStreaming
+    ? "Stop"
+    : "Play";
+  cameraPlayButton
+    .querySelector("image")
+    .setAttribute("href", isStreaming ? stopSvgPath : playSvgPath);
+  setButtonList(templateId);
+}
+
 /**
  * displays the snackbar and a message inside to inform users
  * @param {string} textContent
+ * @param {string} backgroundColor
  */
 function informWithSnackbar(textContent, backgroundColor) {
   snackbar.textContent = textContent;
@@ -229,6 +325,74 @@ function informWithSnackbar(textContent, backgroundColor) {
  * @param {HTMLSpanElement} span
  */
 function settingNewText(name, value, span) {
-  let newText = `${name}: ${value}`;
+  let newText = `${name}: ${name === "zoom" ? "x" : ""}${value}`;
   span.textContent = newText.charAt(0).toUpperCase() + newText.slice(1);
+}
+
+/**
+ * Create a copy of the template button list container to add to the div element (buttons container)
+ * @param {string} templateId <template>'s id
+ */
+function setButtonList(templateId) {
+  let buttonContainer = document.getElementById("buttons_container");
+  if (
+    templateId === "settings_template" ||
+    templateId === "operations_template"
+  ) {
+    buttonContainer.style.justifyContent = "center";
+  } else if (templateId === "main_template") {
+    buttonContainer.style.justifyContent = "space-between";
+  }
+  let templateContentClone = document
+    .getElementById(templateId)
+    .content.cloneNode(true);
+  buttonContainer.replaceChildren(templateContentClone);
+}
+
+/**
+ * Action on tab changing
+ * @param {string} tabName
+ */
+function manageTabs(tabName) {
+  let selectedTabId = `${tabName}_tab`;
+  document.getElementById(currentTabId).style.backgroundColor = crDarkBlueColor;
+  document.getElementById(`${tabName}_tab`).style.backgroundColor = crBlueColor;
+  currentTabId = selectedTabId;
+  setButtonList(`${tabName}_template`);
+}
+
+/**
+ * Enable stream visualization mouvement on click and drag
+ */
+function manageDragMouvement() {
+  const stream = document.getElementById("camera_feed");
+  const container = document.getElementById("camera_feed_container");
+
+  let isDragging = false;
+  let startX, startY, scrollLeft, scrollTop;
+  stream.addEventListener("pointerdown", (e) => {
+    console.log("sqdqsd");
+    isDragging = true;
+    startX = e.pageX - container.offsetLeft;
+    startY = e.pageY - container.offsetTop;
+    scrollLeft = container.scrollLeft;
+    scrollTop = container.scrollTop;
+  });
+
+  window.addEventListener("pointerup", () => {
+    console.log("sqdqsdsssssssssssssssss");
+    isDragging = false;
+  });
+
+  stream.addEventListener("pointermove", (e) => {
+    console.log("mooooooooooo", isDragging);
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const y = e.pageY - container.offsetTop;
+    const deltaX = x - startX;
+    const deltaY = y - startY;
+    container.scrollLeft = scrollLeft - deltaX;
+    container.scrollTop = scrollTop - deltaY;
+  });
 }

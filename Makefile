@@ -26,6 +26,9 @@ format:
 
 build:
 	@echo Building application...
+# For Linux or macOs (also gitbash):
+# cp env.example .env
+	copy env.example .env
 	make clean
 	make install
 	make format
