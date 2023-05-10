@@ -111,6 +111,10 @@ body {
           @media (min-width: 950px) {
             font-size: 14px;
           }
+          @media (max-height: 500px) {
+            margin-top: $img_border_size/2;
+            margin-right: $img_border_size/2;
+          }
         }
         #buttons_container {
           display: flex;
@@ -247,6 +251,7 @@ body {
         img {
           height: 100%;
           width: 100%;
+          touch-action: none;
         }
       }
     }

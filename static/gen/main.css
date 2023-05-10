@@ -120,6 +120,16 @@ body #main_content #television_container #camera_container #settings_info_box {
     font-size: 14px;
   }
 }
+@media (max-height: 500px) {
+  body
+    #main_content
+    #television_container
+    #camera_container
+    #settings_info_box {
+    margin-top: 16px;
+    margin-right: 16px;
+  }
+}
 body #main_content #television_container #camera_container #buttons_container {
   display: flex;
   justify-content: space-between;
@@ -538,7 +548,7 @@ body
     #drag_button_list
     .operation_button_container
     span {
-    font-size: 1vw;
+    font-size: 1.5vw;
   }
 }
 @media (max-width: 500px) {
@@ -571,4 +581,5 @@ body #main_content #television_container #camera_feed_container {
 body #main_content #television_container #camera_feed_container img {
   height: 100%;
   width: 100%;
+  touch-action: none;
 }

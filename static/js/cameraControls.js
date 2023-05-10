@@ -95,6 +95,7 @@ let clickableValues = {
   saturation: 0,
   height: 0,
   width: 0,
+  zoom: 0,
 };
 let currentTabId = "main_tab";
 let crDarkBlueColor = "#122d53";
@@ -369,7 +370,8 @@ function manageDragMouvement() {
 
   let isDragging = false;
   let startX, startY, scrollLeft, scrollTop;
-  stream.addEventListener("mousedown", (e) => {
+  stream.addEventListener("pointerdown", (e) => {
+    console.log("sqdqsd");
     isDragging = true;
     startX = e.pageX - container.offsetLeft;
     startY = e.pageY - container.offsetTop;
@@ -377,11 +379,13 @@ function manageDragMouvement() {
     scrollTop = container.scrollTop;
   });
 
-  window.addEventListener("mouseup", () => {
+  window.addEventListener("pointerup", () => {
+    console.log("sqdqsdsssssssssssssssss");
     isDragging = false;
   });
 
-  stream.addEventListener("mousemove", (e) => {
+  stream.addEventListener("pointermove", (e) => {
+    console.log("mooooooooooo", isDragging);
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - container.offsetLeft;
