@@ -51,6 +51,7 @@ body {
           border-radius: $border_radius_size/2;
           color: white;
           cursor: pointer;
+          padding: 4px;
           span {
             writing-mode: vertical-rl;
             font-size: $font_size * 1.5;
@@ -155,9 +156,8 @@ body {
           }
           #drag_button_list {
             display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            gap: 10%;
+            justify-content: center;
+            gap: 15%;
             .setting_button_container {
               display: flex;
               gap: 4px;
@@ -179,10 +179,9 @@ body {
               }
               span {
                 color: white;
-                font-size: 14px;
                 white-space: nowrap;
                 @media (max-width: 750px) {
-                  font-size: 1.5vw;
+                  font-size: $font_size * 1.5;
                 }
               }
 

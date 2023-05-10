@@ -29,19 +29,13 @@
           <div id="buttons_container"></div>
         </div>
         <div id="other_parameters_tabs">
-          <button
-            id="main_tab"
-            onclick="manageTabs('main_tab', 'main_template')"
-          >
+          <button id="main_tab" onclick="manageTabs('main')">
             <span> Main </span>
           </button>
-          <button
-            id="settings_tab"
-            onclick="manageTabs('settings_tab', 'settings_template')"
-          >
+          <button id="settings_tab" onclick="manageTabs('settings')">
             <span> Settings </span>
           </button>
-          <button id="operations_tab">
+          <button id="operations_tab" onclick="manageTabs('operations')">
             <span> Operations </span>
           </button>
         </div>
@@ -83,11 +77,11 @@
       </div>
 
       <!-- image processing button samples -->
-      <div id="image_processing_button_container">
+      <!-- <div id="image_processing_button_container">
         <button>White balance</button>
         <button>Color to grey</button>
         <button>Canny edge map</button>
-      </div>
+      </div> -->
     </template>
 
     <template id="settings_template">
@@ -111,14 +105,14 @@
           <div id="setting_click_buttons">
             <button
               id="setting_button_minus_exposure"
-              onclick="setCameraClickButtonSettings(false, 'exposure')"
+              onclick="setCameraClickButtonSettings(false, 'exposure', 'settings_template')"
               disabled="true"
             >
               <span>-</span>
             </button>
             <button
               id="setting_button_plus_exposure"
-              onclick="setCameraClickButtonSettings(true, 'exposure')"
+              onclick="setCameraClickButtonSettings(true, 'exposure', 'settings_template')"
               disabled="true"
             >
               <span>+</span>
@@ -140,14 +134,14 @@
           <div id="setting_click_buttons">
             <button
               id="setting_button_minus_saturation"
-              onclick="setCameraClickButtonSettings(false, 'saturation')"
+              onclick="setCameraClickButtonSettings(false, 'saturation', 'settings_template')"
               disabled="true"
             >
               <span>-</span>
             </button>
             <button
               id="setting_button_plus_saturation"
-              onclick="setCameraClickButtonSettings(true, 'saturation')"
+              onclick="setCameraClickButtonSettings(true, 'saturation', 'settings_template')"
               disabled="true"
             >
               <span>+</span>

@@ -47,6 +47,7 @@ body #main_content #television_container #other_parameters_tabs button {
   border-radius: 6px;
   color: white;
   cursor: pointer;
+  padding: 4px;
 }
 body #main_content #television_container #other_parameters_tabs button span {
   writing-mode: vertical-rl;
@@ -204,9 +205,8 @@ body
   #buttons_container
   #drag_button_list {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  gap: 10%;
+  justify-content: center;
+  gap: 15%;
 }
 body
   #main_content
@@ -274,7 +274,6 @@ body
   .setting_button_container
   span {
   color: white;
-  font-size: 14px;
   white-space: nowrap;
 }
 @media (max-width: 750px) {
@@ -286,7 +285,7 @@ body
     #drag_button_list
     .setting_button_container
     span {
-    font-size: 1.5vw;
+    font-size: 2.25vw;
   }
 }
 body

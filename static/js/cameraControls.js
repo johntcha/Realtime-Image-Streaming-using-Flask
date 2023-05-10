@@ -47,7 +47,7 @@ let crDarkBlueColor = "#122d53";
 let crBlueColor = "#4674b2";
 
 // set the default action buttons on load
-manageTabs("main_tab", "main_template");
+manageTabs("main");
 
 /**
  *
@@ -165,9 +165,7 @@ async function setCameraDraggerSettings(settingName, templateId) {
   let templateSettingDrag = settingsTemplateContent.getElementById(
     `setting_drag_${settingName}`
   );
-  let correspondingSpan = modifiedSettingDrag.previousElementSibling;
   let templateCorrespondingSpan = templateSettingDrag.previousElementSibling;
-  settingNewText(settingName, modifiedSettingDrag.value, correspondingSpan);
   settingNewText(
     settingName,
     modifiedSettingDrag.value,
@@ -201,8 +199,11 @@ async function setCameraDraggerSettings(settingName, templateId) {
  * @param {boolean} increase
  * @param {string} settingName
  */
-async function setCameraClickButtonSettings(increase, settingName) {
+async function setCameraClickButtonSettings(increase, settingName, templateId) {
   let correspondingSpan = document.getElementById(
+    `setting_drag_${settingName}`
+  ).previousElementSibling;
+  let templateCorrespondingSpan = settingsTemplateContent.getElementById(
     `setting_drag_${settingName}`
   ).previousElementSibling;
   let value = 0;
@@ -214,7 +215,7 @@ async function setCameraClickButtonSettings(increase, settingName) {
     clickableValueSaturation += increase ? 5 : -5;
     value = clickableValueSaturation;
   }
-  settingNewText(settingName, value, correspondingSpan);
+  settingNewText(settingName, value, templateCorrespondingSpan);
   let param = { [settingName]: value };
 
   try {
@@ -226,6 +227,7 @@ async function setCameraClickButtonSettings(increase, settingName) {
     const settings = await response.json();
     let infoSpan = document.getElementById(`info_${settingName}`);
     settingNewText(settingName, settings[settingName], infoSpan);
+    setButtonList(templateId);
   } catch (error) {
     console.error(error);
     informWithSnackbar(
@@ -270,6 +272,11 @@ function settingNewText(name, value, span) {
  */
 function setButtonList(templateId) {
   let buttonContainer = document.getElementById("buttons_container");
+  if (templateId === "settings_template") {
+    buttonContainer.style.justifyContent = "center";
+  } else if (templateId === "main_template") {
+    buttonContainer.style.justifyContent = "space-between";
+  }
   let templateContentClone = document
     .getElementById(templateId)
     .content.cloneNode(true);
@@ -282,12 +289,12 @@ function setButtonList(templateId) {
 
 /**
  * Action on tab changing
- * @param {string} selectedTabId
- * @param {string} templateId
+ * @param {string} tabName
  */
-function manageTabs(selectedTabId, templateId) {
+function manageTabs(tabName) {
+  let selectedTabId = `${tabName}_tab`;
   document.getElementById(currentTabId).style.backgroundColor = crDarkBlueColor;
-  document.getElementById(selectedTabId).style.backgroundColor = crBlueColor;
+  document.getElementById(`${tabName}_tab`).style.backgroundColor = crBlueColor;
   currentTabId = selectedTabId;
-  setButtonList(templateId);
+  setButtonList(`${tabName}_template`);
 }
