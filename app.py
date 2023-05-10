@@ -54,7 +54,7 @@ def camera_settings():
     """
     for key, value in request.json.items():
         setting_key = key
-        setting_value = int(value)
+        setting_value = float(value)
     return set_camera_settings(setting_key, setting_value)
 
 

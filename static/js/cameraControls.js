@@ -32,6 +32,9 @@ let heightDragger = operationsTemplateContent.getElementById(
 let widthDragger = operationsTemplateContent.getElementById(
   "operation_drag_width"
 );
+let zoomDragger = operationsTemplateContent.getElementById(
+  "operation_drag_zoom"
+);
 let plusHeight = operationsTemplateContent.getElementById(
   "operation_button_plus_height"
 );
@@ -44,6 +47,12 @@ let plusWidth = operationsTemplateContent.getElementById(
 let minusWidth = operationsTemplateContent.getElementById(
   "operation_button_minus_width"
 );
+let plusZoom = operationsTemplateContent.getElementById(
+  "operation_button_plus_zoom"
+);
+let minusZoom = operationsTemplateContent.getElementById(
+  "operation_button_minus_zoom"
+);
 const disableableHTMLComponents = [
   cameraShotButton,
   exposureDragger,
@@ -54,22 +63,27 @@ const disableableHTMLComponents = [
   plusSaturation,
   heightDragger,
   widthDragger,
+  zoomDragger,
   plusHeight,
   minusHeight,
   plusWidth,
   minusWidth,
+  plusZoom,
+  minusZoom,
 ];
 const draggerInputs = [
   { type: "exposure", input: exposureDragger },
   { type: "saturation", input: saturationDragger },
   { type: "height", input: heightDragger },
   { type: "width", input: widthDragger },
+  { type: "zoom", input: zoomDragger },
 ];
 
 let exposureInfoSpan = document.getElementById("info_exposure");
 let saturationInfoSpan = document.getElementById("info_saturation");
 let heightInfoSpan = document.getElementById("info_height");
 let widthInfoSpan = document.getElementById("info_width");
+let zoomInfoSpan = document.getElementById("info_zoom");
 let timeStampInfoSpan = document.getElementById("info_timestamp");
 let settingsInfoBox = document.getElementById("settings_info_box");
 let snackbar = document.getElementById("snackbar");
@@ -146,12 +160,14 @@ async function resetOnStop(isStreaming) {
 
   // set default settings values and hide the info box if not streaming
   if (isStreaming) {
-    const { exposure, saturation, height, width } = await fetchDefaultValues();
+    const { exposure, saturation, height, width, zoom } =
+      await fetchDefaultValues();
     settingsInfoBox.style.display = "flex";
     exposureInfoSpan.textContent = `Exposure: ${exposure}`;
     saturationInfoSpan.textContent = `Saturation: ${saturation}`;
     heightInfoSpan.textContent = `Height: ${height}`;
     widthInfoSpan.textContent = `Width: ${width}`;
+    zoomInfoSpan.textContent = `Zoom: x${zoom}`;
   } else {
     settingsInfoBox.style.display = "none";
   }

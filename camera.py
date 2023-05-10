@@ -10,8 +10,13 @@ EXPOSURE_DEFAULT_VALUE = int(process["EXPOSURE_DEFAULT_VALUE"])
 SATURATION_DEFAULT_VALUE = int(process["SATURATION_DEFAULT_VALUE"])
 STREAM_WIDTH = int(process["STREAM_WIDTH"])
 STREAM_HEIGHT = int(process["STREAM_HEIGHT"])
+ZOOM_DEFAULT_VALUE = int(process["ZOOM_DEFAULT_VALUE"])
 
-operations = {"width": STREAM_WIDTH, "height": STREAM_HEIGHT}
+operations = {
+    "width": STREAM_WIDTH,
+    "height": STREAM_HEIGHT,
+    "zoom": ZOOM_DEFAULT_VALUE,
+}
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
 # displays a black screen on browser and frame is very slowly generated
 # maybe camera hardware issue ?
@@ -43,10 +48,13 @@ def generate_camera_stream():
     """Get camera frames, encode it and send it in chunks"""
     # setting default value where the stream quality is stable
     global operations
-    operations = {"width": STREAM_WIDTH, "height": STREAM_HEIGHT}
+    operations = {
+        "width": STREAM_WIDTH,
+        "height": STREAM_HEIGHT,
+        "zoom": ZOOM_DEFAULT_VALUE,
+    }
     cap.set(cv2.CAP_PROP_EXPOSURE, EXPOSURE_DEFAULT_VALUE)
     cap.set(cv2.CAP_PROP_SATURATION, SATURATION_DEFAULT_VALUE)
-
     while True:
         # capture frame by frame
         is_success, frame = cap.read()
@@ -55,7 +63,13 @@ def generate_camera_stream():
 
         # encode the image format into streaming data
         # jpeg format good compression and reasonable image quality
-        resized = cv2.resize(frame, (operations["width"], operations["height"]))
+        resized = cv2.resize(
+            frame,
+            (
+                int(operations["width"] * operations["zoom"]),
+                int(operations["height"] * operations["zoom"]),
+            ),
+        )
         ret, buffer = cv2.imencode(".jpg", resized)
         if not ret:
             raise ValueError("Couldn't encode the frame as jpeg")
@@ -105,6 +119,10 @@ def set_camera_settings(setting_key, setting_value):
             "defaultValue": STREAM_WIDTH,
             "currentValue": operations["width"],
         },
+        "zoom": {
+            "defaultValue": ZOOM_DEFAULT_VALUE,
+            "currentValue": operations["zoom"],
+        },
     }
     # it would be easier to get the current value with cap.get()
     # but it is not working without cv2.CAP_DSHOW
@@ -135,4 +153,5 @@ def get_default_values():
         "saturation": process["SATURATION_DEFAULT_VALUE"],
         "width": process["STREAM_WIDTH"],
         "height": process["STREAM_HEIGHT"],
+        "zoom": process["ZOOM_DEFAULT_VALUE"],
     }
