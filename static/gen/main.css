@@ -132,7 +132,7 @@ body #main_content #television_container #camera_container #settings_info_box {
 }
 body #main_content #television_container #camera_container #buttons_container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 3%;
   background: #122d53;
   border-radius: 12px;
@@ -155,8 +155,8 @@ body
   #buttons_container
   #click_button_list {
   display: flex;
-  padding-left: 10%;
   gap: 35%;
+  justify-content: center;
 }
 body
   #main_content
@@ -172,8 +172,19 @@ body
   align-items: center;
   gap: 6px;
   font-size: 1.5vw;
-  transition-duration: 0.5s;
   justify-content: center;
+  border-radius: 12px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+body
+  #main_content
+  #television_container
+  #camera_container
+  #buttons_container
+  #click_button_list
+  button:active {
+  transform: translateY(2px);
+  box-shadow: unset;
 }
 body
   #main_content
@@ -183,7 +194,6 @@ body
   #click_button_list
   button#camera_play_button {
   color: white;
-  border-radius: 12px;
   background-color: #4fa165;
 }
 body
@@ -194,7 +204,6 @@ body
   #click_button_list
   button#camera_shot_button {
   color: #4674b2;
-  border-radius: 12px;
 }
 @media (max-width: 500px) {
   body

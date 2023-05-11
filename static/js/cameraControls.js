@@ -88,6 +88,7 @@ let timeStampInfoSpan = document.getElementById("info_timestamp");
 let settingsInfoBox = document.getElementById("settings_info_box");
 let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
+let isProcessing = false;
 let green_play_color = "#4fa165";
 let stop_red_color = "#D2042D";
 let clickableValues = {
@@ -335,14 +336,6 @@ function settingNewText(name, value, span) {
  */
 function setButtonList(templateId) {
   let buttonContainer = document.getElementById("buttons_container");
-  if (
-    templateId === "settings_template" ||
-    templateId === "operations_template"
-  ) {
-    buttonContainer.style.justifyContent = "center";
-  } else if (templateId === "main_template") {
-    buttonContainer.style.justifyContent = "space-between";
-  }
   let templateContentClone = document
     .getElementById(templateId)
     .content.cloneNode(true);
@@ -371,7 +364,6 @@ function manageDragMouvement() {
   let isDragging = false;
   let startX, startY, scrollLeft, scrollTop;
   stream.addEventListener("pointerdown", (e) => {
-    console.log("sqdqsd");
     isDragging = true;
     startX = e.pageX - container.offsetLeft;
     startY = e.pageY - container.offsetTop;
@@ -380,12 +372,10 @@ function manageDragMouvement() {
   });
 
   window.addEventListener("pointerup", () => {
-    console.log("sqdqsdsssssssssssssssss");
     isDragging = false;
   });
 
   stream.addEventListener("pointermove", (e) => {
-    console.log("mooooooooooo", isDragging);
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - container.offsetLeft;
@@ -395,4 +385,24 @@ function manageDragMouvement() {
     container.scrollLeft = scrollLeft - deltaX;
     container.scrollTop = scrollTop - deltaY;
   });
+}
+
+function applyImgProcessing(templateId) {
+  isProcessing = !isProcessing;
+  let cameraWhiteBalanceButton = mainTemplateContent.getElementById(
+    "camera_white_balance_button"
+  );
+  cameraWhiteBalanceButton.style.backgroundColor = isProcessing
+    ? crBlueColor
+    : "white";
+  cameraWhiteBalanceButton.style.color = isProcessing ? "white" : "black";
+  console.log(cameraWhiteBalanceButton.style);
+  cameraWhiteBalanceButton.style.transform = isProcessing
+    ? "translateY(2px)"
+    : "unset";
+  cameraWhiteBalanceButton.style.boxShadow = isProcessing
+    ? "unset"
+    : "2px 2px 2px rgba(0, 0, 0, 0.5)";
+  console.log("processing", isProcessing);
+  setButtonList(templateId);
 }
