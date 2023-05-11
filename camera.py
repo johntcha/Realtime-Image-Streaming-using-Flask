@@ -21,6 +21,7 @@ operations = {
     "zoom": ZOOM_DEFAULT_VALUE,
 }
 processing_labels = ALL_PROCESSING_LABEL.split(",")
+current_processing_label = ""
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
 # displays a black screen on browser and frame is very slowly generated
 # maybe camera hardware issue ?
@@ -87,13 +88,30 @@ def generate_camera_stream():
 
 def capture_image():
     """Take a picture and return a dict with message timestamp if succeed"""
-    # number of picture already in the folder picture
-    count = len(os.listdir(directoryPath)) - 1
+    # filtering the processed pictures by checking if process label is present
+    filtered_listdir = list(
+        filter(
+            lambda x: not any(pl in x for pl in processing_labels),
+            os.listdir(directoryPath),
+        )
+    )
+    # number of "normal" picture already in the folder picture
+    count = len(filtered_listdir) - 1
     success, frame = cap.read()
     if success:
         count += 1
-        cv2.imwrite(os.path.join("pictures", f"picture_{count}.jpg"), frame)
+        image_name = f"picture_{count}.jpg"
+        cv2.imwrite(os.path.join("pictures", image_name), frame)
         timestamp = int(time.time())
+        # only take picture with process if at least one has been chosen
+        if current_processing_label != "":
+            swb = cv2.xphoto.createSimpleWB()
+            processed_img_name = (
+                f"{os.path.splitext(image_name)[0]}_{current_processing_label}.jpg"
+            )
+            processing_operation(
+                current_processing_label, swb, frame, processed_img_name
+            )
         return {
             "message": "Picture has been taken successfully!",
             "timestamp": timestamp,
@@ -167,8 +185,10 @@ def apply_img_processing(is_processing, label):
     If the process operation is removed, delete all pictures with this processing operation.
     If the label is not recognized, throw an error
     """
+    global current_processing_label
     swb = cv2.xphoto.createSimpleWB()
 
+    current_processing_label = label
     # Loop through all the images in the folder
     for image_name in os.listdir(directoryPath):
         # Check if the file is an .jpg image
@@ -183,29 +203,35 @@ def apply_img_processing(is_processing, label):
                 and not any(pl in image_name for pl in processing_labels)
                 and processed_img_name not in os.listdir(directoryPath)
             ):
-                if label == "WB":
-                    # Apply white balance correction
-                    swb.setP(1.0)
-                    corrected_img = swb.balanceWhite(img)
-                elif label == "CTG" or label == "CE":
-                    # Convert the image to grayscale
-                    corrected_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                    if label == "CE":
-                        # Apply Canny edge detection with minimum and maximum threshold values
-                        # Need to apply the grayscale first
-                        # since the basic Canny algorithm works on grayscale images
-                        corrected_img = cv2.Canny(
-                            corrected_img, MIN_THRESHOLD_VALUE, MAX_THRESHOLD_VALUE
-                        )
-                else:
-                    raise ValueError(f"{label} operation label does not exist")
-                output_path = os.path.join(directoryPath, processed_img_name)
-                cv2.imwrite(output_path, corrected_img)
+                processing_operation(label, swb, img, processed_img_name)
             # Delete processed pictures
             if is_processing is False and label in image_name:
                 os.remove(image_path)
+                current_processing_label = ""
 
     if is_processing is True:
         return {"message": "Image processing has been sucessfully applied!"}
     else:
         return {"message": "Image processing has been sucessfully reverted!"}
+
+
+def processing_operation(label, simple_WB, img, processed_img_name):
+    """Chosing processing operation according to label"""
+    if label == "WB":
+        # Apply white balance correction
+        simple_WB.setP(1.0)
+        corrected_img = simple_WB.balanceWhite(img)
+    elif label == "CTG" or label == "CE":
+        # Convert the image to grayscale
+        corrected_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if label == "CE":
+            # Apply Canny edge detection with minimum and maximum threshold values
+            # Need to apply the grayscale first
+            # since the basic Canny algorithm works on grayscale images
+            corrected_img = cv2.Canny(
+                corrected_img, MIN_THRESHOLD_VALUE, MAX_THRESHOLD_VALUE
+            )
+    else:
+        raise ValueError(f"{label} operation label does not exist")
+    output_path = os.path.join(directoryPath, processed_img_name)
+    cv2.imwrite(output_path, corrected_img)
