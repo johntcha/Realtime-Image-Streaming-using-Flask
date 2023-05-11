@@ -26,7 +26,7 @@ Once everything is installed, you can run the following make command to build yo
 If you are using Linux/Mac OS, you will need in the Makefile to comment the Windows lines and uncomment the Linux/Max OS ones.
 It will also create a `.env` file copying the `env.example` content. If you wish to have different default value for the camera stream, feel free to modify it in the `.env`.
 
-You can then run the application by running the run.bat on Windows or run.sh on Linux/Mac OS and go to `http://localhost:5000/`. You should see the website running on a television with no signal.
+You can then run the application by running the `run.bat` on Windows or `run.sh` on Linux/Mac OS and go to `http://localhost:5000/`. You should see the website running on a television with no signal.
 
 ## How to use it?
 
@@ -36,7 +36,9 @@ The buttons `Shot` and `dragging sliders (+/- on smaller screen size)` are disab
 
 You can now modify settings with the `dragging sliders (or +/- buttons)` and see the modification on real-time on camera and on the black information box. You can also move the camera stream if the zoom is high enough by clicking on and dragging the visualization.
 
-By clicking on the `Shot` button, it will take a pictures, add them inside the `pictures` folder and add the timestamp of the picture on the black information box. If the picture has been taken, a small `snackbar` will appear for a second on the top of the television indicating the shot has been successfully done.
+On the main tab, there are 3 buttons on the right of the `Shot` button. They are image processing operations. Only one can be active at a time and can be pressed even if the camera stream is not active. When a button is pressed, all pictures in the backend will be duplicated and the processing operation will be applied to them. If the user click on the same button again or another processing button is clicked, the processed pictures will be deleted (and duplicated pictures with new process will be added). If the pictures have been processed or remove, the `snackbar` will appear to inform the user.
+
+By clicking on the `Shot` button, it will take a pictures, add them inside the `pictures` folder and add the timestamp of the picture on the black information box. If the picture has been taken, a small `snackbar` will appear for a second on the top of the television indicating the shot has been successfully done. If a processing button has been clicked, it will take a picture of the original stream camera and duplicate it to apply the current processing operation.
 
 If there are some errors, the same `snackbar` will be displayed indicating the error.
 
