@@ -2,6 +2,7 @@ from flask import Flask, Response, render_template, request
 from flask_assets import Bundle, Environment
 
 from camera import (
+    apply_img_processing,
     capture_image,
     generate_camera_stream,
     get_default_values,
@@ -64,3 +65,11 @@ def default_values():
     Fetch the default values
     """
     return get_default_values()
+
+
+@app.route("/img_processing", methods=["POST"])
+def img_processing():
+    """
+    Apply image processing on all pictures
+    """
+    return apply_img_processing(request.json["isProcessing"], request.json["label"])

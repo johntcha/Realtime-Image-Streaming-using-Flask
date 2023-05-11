@@ -88,7 +88,6 @@ let timeStampInfoSpan = document.getElementById("info_timestamp");
 let settingsInfoBox = document.getElementById("settings_info_box");
 let snackbar = document.getElementById("snackbar");
 let isStreaming = false;
-let isProcessing = false;
 let green_play_color = "#4fa165";
 let stop_red_color = "#D2042D";
 let clickableValues = {
@@ -101,6 +100,21 @@ let clickableValues = {
 let currentTabId = "main_tab";
 let crDarkBlueColor = "#122d53";
 let crBlueColor = "#4674b2";
+
+let processingOperations = {
+  white_balance: {
+    label: "WB",
+    isProcessing: false,
+  },
+  color_to_gray: {
+    label: "CTG",
+    isProcessing: false,
+  },
+  canny_edge: {
+    label: "CE",
+    isProcessing: false,
+  },
+};
 
 /*********************************Set the default actions on load*********************************/
 manageTabs("main");
@@ -119,7 +133,7 @@ async function fetchDefaultValues() {
     const response = await fetch("/default_values", {
       method: "GET",
     });
-    return await response.json();
+    return response.json();
   } catch (error) {
     console.error(error);
     textContent = "An error occured while fetching default values";
@@ -275,6 +289,72 @@ async function setCameraClickButtonSettings(
   }
 }
 
+/**
+ * changes button style on click and send information to the back which processes is on/off
+ * @param {string} templateId
+ * @param {string} processingName
+ */
+async function applyImgProcessing(templateId, processingName) {
+  processingOperations[processingName].isProcessing =
+    !processingOperations[processingName].isProcessing;
+  let isProcessing = processingOperations[processingName].isProcessing;
+  if (isProcessing) {
+    // deactivate all other processing button when another is pressed
+    for (const [key, value] of Object.entries(processingOperations)) {
+      if (key !== processingName && value.isProcessing) {
+        value.isProcessing = false;
+        let otherCameraProcessingButton = mainTemplateContent.getElementById(
+          `camera_${key}_button`
+        );
+        otherCameraProcessingButton.style.backgroundColor = "white";
+        otherCameraProcessingButton.style.color = "black";
+        otherCameraProcessingButton.style.transform = "unset";
+        otherCameraProcessingButton.style.boxShadow =
+          "2px 2px 2px rgba(0, 0, 0, 0.5)";
+        const param = { isProcessing: value.isProcessing, label: value.label };
+        await fetch("/img_processing", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(param),
+        });
+      }
+    }
+  }
+  let label = processingOperations[processingName].label;
+  let cameraProcessingButton = mainTemplateContent.getElementById(
+    `camera_${processingName}_button`
+  );
+  cameraProcessingButton.style.backgroundColor = isProcessing
+    ? crBlueColor
+    : "white";
+  cameraProcessingButton.style.color = isProcessing ? "white" : "black";
+  cameraProcessingButton.style.transform = isProcessing
+    ? "translateY(2px)"
+    : "unset";
+  cameraProcessingButton.style.boxShadow = isProcessing
+    ? "unset"
+    : "2px 2px 2px rgba(0, 0, 0, 0.5)";
+  setButtonList(templateId);
+  const param = { isProcessing, label };
+  try {
+    const response = await fetch("/img_processing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(param),
+    });
+    const result = await response.json();
+    if (result.message) {
+      informWithSnackbar(result.message, green_play_color);
+    }
+  } catch (error) {
+    console.error(error);
+    informWithSnackbar(
+      "An error occured while applying white balance processing",
+      stop_red_color
+    );
+  }
+}
+
 /*********************************Display management functions*********************************/
 
 /**
@@ -385,24 +465,4 @@ function manageDragMouvement() {
     container.scrollLeft = scrollLeft - deltaX;
     container.scrollTop = scrollTop - deltaY;
   });
-}
-
-function applyImgProcessing(templateId) {
-  isProcessing = !isProcessing;
-  let cameraWhiteBalanceButton = mainTemplateContent.getElementById(
-    "camera_white_balance_button"
-  );
-  cameraWhiteBalanceButton.style.backgroundColor = isProcessing
-    ? crBlueColor
-    : "white";
-  cameraWhiteBalanceButton.style.color = isProcessing ? "white" : "black";
-  console.log(cameraWhiteBalanceButton.style);
-  cameraWhiteBalanceButton.style.transform = isProcessing
-    ? "translateY(2px)"
-    : "unset";
-  cameraWhiteBalanceButton.style.boxShadow = isProcessing
-    ? "unset"
-    : "2px 2px 2px rgba(0, 0, 0, 0.5)";
-  console.log("processing", isProcessing);
-  setButtonList(templateId);
 }

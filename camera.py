@@ -11,12 +11,16 @@ SATURATION_DEFAULT_VALUE = int(process["SATURATION_DEFAULT_VALUE"])
 STREAM_WIDTH = int(process["STREAM_WIDTH"])
 STREAM_HEIGHT = int(process["STREAM_HEIGHT"])
 ZOOM_DEFAULT_VALUE = int(process["ZOOM_DEFAULT_VALUE"])
+ALL_PROCESSING_LABEL = process["ALL_PROCESSING_LABEL"]
+MIN_THRESHOLD_VALUE = int(process["MIN_THRESHOLD_VALUE"])
+MAX_THRESHOLD_VALUE = int(process["MAX_THRESHOLD_VALUE"])
 
 operations = {
     "width": STREAM_WIDTH,
     "height": STREAM_HEIGHT,
     "zoom": ZOOM_DEFAULT_VALUE,
 }
+processing_labels = ALL_PROCESSING_LABEL.split(",")
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
 # displays a black screen on browser and frame is very slowly generated
 # maybe camera hardware issue ?
@@ -155,3 +159,53 @@ def get_default_values():
         "height": process["STREAM_HEIGHT"],
         "zoom": process["ZOOM_DEFAULT_VALUE"],
     }
+
+
+def apply_img_processing(is_processing, label):
+    """Duplicate and apply a process operation on all pictures
+    in the /pictures folder according to the label.
+    If the process operation is removed, delete all pictures with this processing operation.
+    If the label is not recognized, throw an error
+    """
+    swb = cv2.xphoto.createSimpleWB()
+
+    # Loop through all the images in the folder
+    for image_name in os.listdir(directoryPath):
+        # Check if the file is an .jpg image
+        if image_name.endswith(".jpg"):
+            image_path = os.path.join(directoryPath, image_name)
+            processed_img_name = f"{os.path.splitext(image_name)[0]}_{label}.jpg"
+            img = cv2.imread(image_path)
+            # Don't apply the processing on processed and already processed pictures
+            if (
+                is_processing is True
+                # check if the picture name is already processed by checking on processing label
+                and not any(pl in image_name for pl in processing_labels)
+                and processed_img_name not in os.listdir(directoryPath)
+            ):
+                if label == "WB":
+                    # Apply white balance correction
+                    swb.setP(1.0)
+                    corrected_img = swb.balanceWhite(img)
+                elif label == "CTG" or label == "CE":
+                    # Convert the image to grayscale
+                    corrected_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    if label == "CE":
+                        # Apply Canny edge detection with minimum and maximum threshold values
+                        # Need to apply the grayscale first
+                        # since the basic Canny algorithm works on grayscale images
+                        corrected_img = cv2.Canny(
+                            corrected_img, MIN_THRESHOLD_VALUE, MAX_THRESHOLD_VALUE
+                        )
+                else:
+                    raise ValueError(f"{label} operation label does not exist")
+                output_path = os.path.join(directoryPath, processed_img_name)
+                cv2.imwrite(output_path, corrected_img)
+            # Delete processed pictures
+            if is_processing is False and label in image_name:
+                os.remove(image_path)
+
+    if is_processing is True:
+        return {"message": "Image processing has been sucessfully applied!"}
+    else:
+        return {"message": "Image processing has been sucessfully reverted!"}

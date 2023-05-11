@@ -155,8 +155,28 @@ body
   #buttons_container
   #click_button_list {
   display: flex;
-  gap: 35%;
+  gap: 15%;
   justify-content: center;
+}
+@media (max-width: 400px) {
+  body
+    #main_content
+    #television_container
+    #camera_container
+    #buttons_container
+    #click_button_list {
+    gap: 5%;
+  }
+}
+body
+  #main_content
+  #television_container
+  #camera_container
+  #buttons_container
+  #click_button_list
+  #processing_buttons_container {
+  display: flex;
+  gap: 8px;
 }
 body
   #main_content
@@ -170,7 +190,7 @@ body
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   font-size: 1.5vw;
   justify-content: center;
   border-radius: 12px;
@@ -205,7 +225,7 @@ body
   button#camera_shot_button {
   color: #4674b2;
 }
-@media (max-width: 500px) {
+@media (max-width: 635px) {
   body
     #main_content
     #television_container

@@ -6,6 +6,7 @@ $border_radius_size: 12px;
 $padding_size: 3%;
 $font_size: 1.5vw;
 $outline_size: 4px;
+$base_gap: 4px;
 
 @mixin flex-col {
   display: flex;
@@ -99,7 +100,7 @@ body {
           position: absolute;
           width: 38%;
           flex-direction: column;
-          gap: 2px;
+          gap: $base_gap/2;
           background: black;
           color: white;
           opacity: 0.7;
@@ -129,15 +130,22 @@ body {
           }
           #click_button_list {
             display: flex;
-            gap: 35%;
+            gap: 15%;
             justify-content: center;
+            @media (max-width: 400px) {
+              gap: 5%;
+            }
+            #processing_buttons_container {
+              display: flex;
+              gap: $base_gap * 2;
+            }
             button {
               aspect-ratio: 6/5;
               cursor: pointer;
               font-weight: 700;
               display: flex;
               align-items: center;
-              gap: 6px;
+              gap: $base_gap;
               font-size: $font_size;
               justify-content: center;
               border-radius: $border_radius_size;
@@ -155,7 +163,7 @@ body {
                 color: $cr_blue;
               }
               span {
-                @media (max-width: 500px) {
+                @media (max-width: 635px) {
                   display: none;
                 }
               }
@@ -169,7 +177,7 @@ body {
               display: flex;
               flex-direction: column;
               justify-content: center;
-              gap: 8px;
+              gap: $base_gap * 2;
               @media (max-width: 750px) {
                 flex-direction: row;
               }
@@ -178,11 +186,11 @@ body {
             .setting_button_container,
             .operation_button_container {
               display: flex;
-              gap: 4px;
+              gap: $base_gap;
               align-items: center;
               justify-content: right;
               @media (max-width: 750px) {
-                gap: 8px;
+                gap: $base_gap * 2;
               }
               input[type="range"] {
                 height: 30%;
@@ -207,7 +215,7 @@ body {
               .operation_click_buttons {
                 display: flex;
                 @media (max-width: 750px) {
-                  gap: 4px;
+                  gap: $base_gap;
                 }
                 button {
                   border-radius: 6px;
@@ -222,7 +230,7 @@ body {
             }
             .operation_button_container {
               @media (max-width: 500px) {
-                gap: 4px;
+                gap: $base_gap;
               }
               span {
                 @media (max-width: 500px) {
@@ -231,7 +239,7 @@ body {
               }
               .operation_click_buttons {
                 @media (max-width: 500px) {
-                  gap: 1px;
+                  gap: $base_gap/4;
                 }
               }
             }

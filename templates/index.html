@@ -81,12 +81,26 @@
           </svg>
           <span> Shot </span>
         </button>
-        <button
-          id="camera_white_balance_button"
-          onclick="applyImgProcessing('main_template')"
-        >
-          White balance
-        </button>
+        <div id="processing_buttons_container">
+          <button
+            id="camera_white_balance_button"
+            onclick="applyImgProcessing('main_template', 'white_balance')"
+          >
+            White balance
+          </button>
+          <button
+            id="camera_color_to_gray_button"
+            onclick="applyImgProcessing('main_template', 'color_to_gray')"
+          >
+            Color-to-gray
+          </button>
+          <button
+            id="camera_canny_edge_button"
+            onclick="applyImgProcessing('main_template', 'canny_edge')"
+          >
+            Canny edge
+          </button>
+        </div>
       </div>
     </template>
 
