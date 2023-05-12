@@ -5,7 +5,7 @@ let settingsTemplateContent =
 let operationsTemplateContent = document.getElementById(
   "operations_template"
 ).content;
-let cameraFeed = document.getElementById("camera_feed");
+let cameraFeeds = document.getElementsByClassName("camera_feed");
 let cameraPlayButton = mainTemplateContent.getElementById("camera_play_button");
 let cameraShotButton = mainTemplateContent.getElementById("camera_shot_button");
 let exposureDragger = settingsTemplateContent.getElementById(
@@ -176,11 +176,13 @@ async function resetOnStop(isStreaming) {
   }
 
   // set default settings values and hide the info box if not streaming
-  const stream = document.getElementById("camera_feed");
+  const streams = document.getElementsByClassName("camera_feed");
   if (isStreaming) {
     const { exposure, saturation, height, width, zoom } =
       await fetchDefaultValues();
-    stream.style.cursor = "move";
+    for (const s of streams) {
+      s.style.cursor = "move";
+    }
     settingsInfoBox.style.display = "flex";
     exposureInfoSpan.textContent = `Exposure: ${exposure}`;
     saturationInfoSpan.textContent = `Saturation: ${saturation}`;
@@ -189,7 +191,9 @@ async function resetOnStop(isStreaming) {
     zoomInfoSpan.textContent = `Zoom: x${zoom}`;
   } else {
     settingsInfoBox.style.display = "none";
-    stream.style.cursor = "unset";
+    for (const s of streams) {
+      s.style.cursor = "unset";
+    }
   }
   if (!isStreaming) {
     // reset settings on stop
@@ -365,7 +369,9 @@ async function applyImgProcessing(templateId, processingName) {
 async function startStopCamera(templateId) {
   isStreaming = !isStreaming;
   await resetOnStop(isStreaming);
-  cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
+  for (const feed of cameraFeeds) {
+    feed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
+  }
   // start/stop button management
   isStreaming
     ? (cameraPlayButton.style.backgroundColor = stop_red_color)
@@ -436,50 +442,51 @@ function manageTabs(tabName) {
  * Enable stream visualization mouvement on click and drag
  */
 function manageDragMouvement() {
-  const stream = document.getElementById("camera_feed");
-  const container = document.getElementById("camera_feed_container");
+  const streams = document.getElementsByClassName("camera_feed");
 
   let isDragging = false;
   let startX, startY;
-  stream.addEventListener("pointerdown", (e) => {
-    isDragging = true;
-    // negative to be more natural on drag
-    startX = -e.pageX - container.offsetLeft;
-    startY = -e.pageY - container.offsetTop;
-  });
+  for (const s of streams) {
+    const container = s.parentElement;
+    s.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      startX = e.pageX - container.offsetLeft;
+      startY = e.pageY - container.offsetTop;
+    });
+
+    // throttle to avoid multiple call
+    // execute the function every 100 ms
+    s.addEventListener(
+      "pointermove",
+      throttle(async (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        // negative to be more natural on drag
+        const x = -e.pageX - container.offsetLeft;
+        const y = -e.pageY - container.offsetTop;
+        const deltaX = Math.round(x - startX);
+        const deltaY = Math.round(y - startY);
+        const param = { dx: deltaX, dy: deltaY };
+        try {
+          await fetch("/coords", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(param),
+          });
+        } catch (error) {
+          console.error(error);
+          informWithSnackbar(
+            "An error occured while moving zoom location",
+            stop_red_color
+          );
+        }
+      }, 100)
+    );
+  }
 
   window.addEventListener("pointerup", () => {
     isDragging = false;
   });
-
-  // throttle to avoid multiple call
-  // execute the function every 100 ms
-  stream.addEventListener(
-    "pointermove",
-    throttle(async (e) => {
-      if (!isDragging) return;
-      e.preventDefault();
-      // negative to be more natural on drag
-      const x = -e.pageX - container.offsetLeft;
-      const y = -e.pageY - container.offsetTop;
-      const deltaX = Math.round(x - startX);
-      const deltaY = Math.round(y - startY);
-      const param = { dx: deltaX, dy: deltaY };
-      try {
-        await fetch("/coords", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(param),
-        });
-      } catch (error) {
-        console.error(error);
-        informWithSnackbar(
-          "An error occured while moving zoom location",
-          stop_red_color
-        );
-      }
-    }, 100)
-  );
 }
 
 /**

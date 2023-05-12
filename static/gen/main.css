@@ -24,24 +24,33 @@ body #main_content h1 {
     font-size: 46px;
   }
 }
-body #main_content #television_container {
+body #main_content #television_list {
+  display: flex;
+  gap: 4px;
+}
+@media (max-width: 650px) {
+  body #main_content #television_list {
+    flex-direction: column;
+  }
+}
+body #main_content .television_container {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
-body #main_content #television_container #other_parameters_tabs {
+body #main_content .television_container #other_parameters_tabs {
   display: flex;
   flex-direction: column;
   padding-left: 2px;
   padding-top: 32px;
 }
 @media (max-height: 500px) {
-  body #main_content #television_container #other_parameters_tabs {
+  body #main_content .television_container #other_parameters_tabs {
     padding-top: 16px;
   }
 }
-body #main_content #television_container #other_parameters_tabs button {
+body #main_content .television_container #other_parameters_tabs button {
   outline: 2px solid black;
   background: #122d53;
   border-radius: 6px;
@@ -49,23 +58,23 @@ body #main_content #television_container #other_parameters_tabs button {
   cursor: pointer;
   padding: 4px;
 }
-body #main_content #television_container #other_parameters_tabs button span {
+body #main_content .television_container #other_parameters_tabs button span {
   writing-mode: vertical-rl;
-  font-size: 2.25vw;
+  font-size: 1.5vw;
 }
 @media (min-width: 1200px) {
-  body #main_content #television_container #other_parameters_tabs button span {
+  body #main_content .television_container #other_parameters_tabs button span {
     font-size: 16px;
   }
 }
-body #main_content #television_container #camera_container {
+body #main_content .television_container .camera_container {
   display: flex;
   flex-direction: column;
   width: 70%;
   max-width: 700px;
   position: relative;
 }
-body #main_content #television_container #camera_container #snackbar {
+body #main_content .television_container .camera_container #snackbar {
   outline: 2px solid black;
   background: #122d53;
   position: absolute;
@@ -86,17 +95,17 @@ body #main_content #television_container #camera_container #snackbar {
   z-index: 1;
 }
 @media (max-height: 500px) {
-  body #main_content #television_container #camera_container #snackbar {
+  body #main_content .television_container .camera_container #snackbar {
     margin-top: 21.33333px;
   }
 }
 @media (min-width: 1400px) {
-  body #main_content #television_container #camera_container #snackbar {
+  body #main_content .television_container .camera_container #snackbar {
     font-size: 16px;
     padding: 4px;
   }
 }
-body #main_content #television_container #camera_container #settings_info_box {
+body #main_content .television_container .camera_container #settings_info_box {
   display: none;
   position: absolute;
   width: 38%;
@@ -114,8 +123,8 @@ body #main_content #television_container #camera_container #settings_info_box {
 @media (min-width: 950px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #settings_info_box {
     font-size: 14px;
   }
@@ -123,14 +132,14 @@ body #main_content #television_container #camera_container #settings_info_box {
 @media (max-height: 500px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #settings_info_box {
     margin-top: 16px;
     margin-right: 16px;
   }
 }
-body #main_content #television_container #camera_container #buttons_container {
+body #main_content .television_container .camera_container #buttons_container {
   display: flex;
   justify-content: center;
   padding: 3%;
@@ -142,27 +151,27 @@ body #main_content #television_container #camera_container #buttons_container {
 @media (max-height: 500px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container {
     padding: 1%;
   }
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #click_button_list {
   display: flex;
-  gap: 15%;
-  justify-content: center;
+  gap: 10%;
+  justify-content: right;
 }
 @media (max-width: 400px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #click_button_list {
     gap: 5%;
@@ -170,8 +179,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #click_button_list
   #processing_buttons_container {
@@ -180,8 +189,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #click_button_list
   button {
@@ -191,26 +200,15 @@ body
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 1.5vw;
+  font-size: 0.75vw;
   justify-content: center;
   border-radius: 12px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
-@media (min-width: 1000px) {
-  body
-    #main_content
-    #television_container
-    #camera_container
-    #buttons_container
-    #click_button_list
-    button {
-    font-size: 16px;
-  }
-}
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #click_button_list
   button:active {
@@ -219,8 +217,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #click_button_list
   button#camera_play_button {
@@ -229,18 +227,18 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #click_button_list
   button#camera_shot_button {
   color: #4674b2;
 }
-@media (max-width: 635px) {
+@media (max-width: 1140px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #click_button_list
     button
@@ -250,8 +248,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list {
   display: flex;
@@ -260,8 +258,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   #size_buttons_container {
@@ -273,8 +271,8 @@ body
 @media (max-width: 750px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     #size_buttons_container {
@@ -283,15 +281,15 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container {
@@ -303,15 +301,15 @@ body
 @media (max-width: 750px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .setting_button_container,
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container {
@@ -320,16 +318,16 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
   input[type="range"],
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -339,16 +337,16 @@ body
 @media (max-width: 750px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .setting_button_container
     input[type="range"],
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
@@ -359,16 +357,16 @@ body
 @media (min-width: 750px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .setting_button_container
     button,
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
@@ -378,16 +376,16 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
   span,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -398,16 +396,16 @@ body
 @media (max-width: 750px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .setting_button_container
     span,
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
@@ -417,32 +415,32 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
   .setting_click_buttons,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
   .operation_click_buttons,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
   .setting_click_buttons,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -452,32 +450,32 @@ body
 @media (max-width: 750px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .setting_button_container
     .setting_click_buttons,
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .setting_button_container
     .operation_click_buttons,
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
     .setting_click_buttons,
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
@@ -487,8 +485,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
@@ -496,8 +494,8 @@ body
   button,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
@@ -505,8 +503,8 @@ body
   button,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -514,8 +512,8 @@ body
   button,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -527,8 +525,8 @@ body
 }
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
@@ -537,8 +535,8 @@ body
   span,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .setting_button_container
@@ -547,8 +545,8 @@ body
   span,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -557,8 +555,8 @@ body
   span,
 body
   #main_content
-  #television_container
-  #camera_container
+  .television_container
+  .camera_container
   #buttons_container
   #drag_button_list
   .operation_button_container
@@ -571,8 +569,8 @@ body
 @media (max-width: 500px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container {
@@ -582,8 +580,8 @@ body
 @media (max-width: 500px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
@@ -594,8 +592,8 @@ body
 @media (max-width: 500px) {
   body
     #main_content
-    #television_container
-    #camera_container
+    .television_container
+    .camera_container
     #buttons_container
     #drag_button_list
     .operation_button_container
@@ -603,7 +601,7 @@ body
     gap: 1px;
   }
 }
-body #main_content #television_container #camera_feed_container {
+body #main_content .television_container .camera_feed_container {
   border-radius: 36px;
   border: 32px solid #122d53;
   outline: 4px solid black;
@@ -613,12 +611,12 @@ body #main_content #television_container #camera_feed_container {
   background: black;
 }
 @media (max-height: 500px) {
-  body #main_content #television_container #camera_feed_container {
+  body #main_content .television_container .camera_feed_container {
     aspect-ratio: 16/8;
     border: 16px solid #122d53;
   }
 }
-body #main_content #television_container #camera_feed_container img {
+body #main_content .television_container .camera_feed_container img {
   height: 100%;
   width: 100%;
   touch-action: none;
