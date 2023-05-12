@@ -6,6 +6,7 @@ from camera import (
     capture_image,
     generate_camera_stream,
     get_default_values,
+    get_coords,
     set_camera_settings,
 )
 
@@ -73,3 +74,11 @@ def img_processing():
     Apply image processing on all pictures
     """
     return apply_img_processing(request.json["isProcessing"], request.json["label"])
+
+
+@app.route("/coords", methods=["POST"])
+def coords():
+    """
+    Getting the dx and dy coords
+    """
+    return get_coords(request.json)

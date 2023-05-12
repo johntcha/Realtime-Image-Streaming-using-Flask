@@ -21,6 +21,7 @@ operations = {
     "zoom": ZOOM_DEFAULT_VALUE,
 }
 
+coords = {"dx": 0, "dy": 0}
 processing_labels = ALL_PROCESSING_LABEL.split(",")
 current_processing_label = ""
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
@@ -54,11 +55,13 @@ def generate_camera_stream():
     """Get camera frames, encode it and send it in chunks"""
     # setting default value where the stream quality is stable
     global operations
+    global coords
     operations = {
         "width": STREAM_WIDTH,
         "height": STREAM_HEIGHT,
         "zoom": ZOOM_DEFAULT_VALUE,
     }
+    coords = {"dx": 0, "dy": 0}
     cap.set(cv2.CAP_PROP_EXPOSURE, EXPOSURE_DEFAULT_VALUE)
     cap.set(cv2.CAP_PROP_SATURATION, SATURATION_DEFAULT_VALUE)
     while True:
@@ -95,7 +98,8 @@ def capture_image():
     if success:
         count += 1
         image_name = f"picture_{count}.jpg"
-        cv2.imwrite(os.path.join("pictures", image_name), applyOperations(frame))
+        frame = applyOperations(frame)
+        cv2.imwrite(os.path.join("pictures", image_name), frame)
         timestamp = int(time.time())
         # only take picture with process if at least one has been chosen
         if current_processing_label != "":
@@ -232,22 +236,49 @@ def processing_operation(label, simple_WB, img, processed_img_name):
 
 
 def applyOperations(frame):
-    # ROI coordinates (top, left, bottom, right)
-    # starting from top-left
-    roi = [
-        0,
-        0,
-        int(STREAM_HEIGHT / operations["zoom"]),
-        int(STREAM_WIDTH / operations["zoom"]),
-    ]
-    # array[start_row:end_row, start_column:end_column]
-    roi_frame = frame[roi[0] : roi[2], roi[1] : roi[3]]
+    start_row = int(coords["dy"])
+    start_column = int(coords["dx"])
+    end_row = int(STREAM_HEIGHT / operations["zoom"]) + start_row
+    end_column = int(STREAM_WIDTH / operations["zoom"]) + start_column
+    # image border behaviors
+    # case dy > image height
+    if end_row > STREAM_HEIGHT:
+        coords["dy"] = STREAM_HEIGHT - int(STREAM_HEIGHT / operations["zoom"])
+        start_row = coords["dy"]
+        end_row = STREAM_HEIGHT
+    # case dx > image width
+    if end_column > STREAM_WIDTH:
+        coords["dx"] = STREAM_HEIGHT - int(STREAM_HEIGHT / operations["zoom"])
+        start_column = coords["dx"]
+        end_column = STREAM_WIDTH
+    # case dy < 0
+    if start_row < 0:
+        coords["dy"] = 0
+        start_row = coords["dy"]
+    # case dx < 0
+    if start_column < 0:
+        coords["dx"] = 0
+        start_column = coords["dx"]
 
-    resized = cv2.resize(
-        roi_frame,
-        (
-            int(operations["width"]),
-            int(operations["height"]),
-        ),
-    )
-    return resized
+    frame = frame[start_row:end_row, start_column:end_column]
+
+    # only resize if the size if different from the default values
+    if (
+        int(operations["width"]) != STREAM_WIDTH
+        or int(operations["height"]) != STREAM_HEIGHT
+    ):
+        frame = cv2.resize(
+            frame,
+            (
+                int(operations["width"]),
+                int(operations["height"]),
+            ),
+        )
+    return frame
+
+
+def get_coords(fetched_coords):
+    """Update dx and dy coordinates"""
+    coords["dx"] += fetched_coords["dx"]
+    coords["dy"] += fetched_coords["dy"]
+    return coords
