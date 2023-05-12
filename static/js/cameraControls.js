@@ -193,7 +193,7 @@ async function resetOnStop(isStreaming) {
   }
   if (!isStreaming) {
     // reset settings on stop
-    Object.keys(clickableValues).forEach((k) => (k = 0));
+    Object.keys(clickableValues).forEach((k) => (clickableValues[k] = 0));
     for (const dragger of draggerInputs) {
       dragger.input.value = 0;
       settingNewText(
@@ -366,8 +366,6 @@ async function startStopCamera(templateId) {
   isStreaming = !isStreaming;
   await resetOnStop(isStreaming);
   cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
-  cameraFeed.style.height = isStreaming ? "unset" : "100%";
-  cameraFeed.style.width = isStreaming ? "unset" : "100%";
   // start/stop button management
   isStreaming
     ? (cameraPlayButton.style.backgroundColor = stop_red_color)
@@ -442,27 +440,62 @@ function manageDragMouvement() {
   const container = document.getElementById("camera_feed_container");
 
   let isDragging = false;
-  let startX, startY, scrollLeft, scrollTop;
+  let startX, startY;
   stream.addEventListener("pointerdown", (e) => {
     isDragging = true;
-    startX = e.pageX - container.offsetLeft;
-    startY = e.pageY - container.offsetTop;
-    scrollLeft = container.scrollLeft;
-    scrollTop = container.scrollTop;
+    // negative to be more natural on drag
+    startX = -e.pageX - container.offsetLeft;
+    startY = -e.pageY - container.offsetTop;
   });
 
   window.addEventListener("pointerup", () => {
     isDragging = false;
   });
 
-  stream.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - container.offsetLeft;
-    const y = e.pageY - container.offsetTop;
-    const deltaX = x - startX;
-    const deltaY = y - startY;
-    container.scrollLeft = scrollLeft - deltaX;
-    container.scrollTop = scrollTop - deltaY;
-  });
+  // throttle to avoid multiple call
+  // execute the function every 100 ms
+  stream.addEventListener(
+    "pointermove",
+    throttle(async (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      // negative to be more natural on drag
+      const x = -e.pageX - container.offsetLeft;
+      const y = -e.pageY - container.offsetTop;
+      const deltaX = Math.round(x - startX);
+      const deltaY = Math.round(y - startY);
+      const param = { dx: deltaX, dy: deltaY };
+      try {
+        await fetch("/coords", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(param),
+        });
+      } catch (error) {
+        console.error(error);
+        informWithSnackbar(
+          "An error occured while moving zoom location",
+          stop_red_color
+        );
+      }
+    }, 100)
+  );
+}
+
+/**
+ * execute the callback after {interval} ms
+ * @param {Function} callback function to throttle
+ * @param {number} interval in ms
+ * @returns
+ */
+function throttle(callback, interval) {
+  let enableCall = true;
+
+  return function (...args) {
+    if (!enableCall) return;
+
+    enableCall = false;
+    callback.apply(this, args);
+    setTimeout(() => (enableCall = true), interval);
+  };
 }
