@@ -193,7 +193,7 @@ async function resetOnStop(isStreaming) {
   }
   if (!isStreaming) {
     // reset settings on stop
-    Object.keys(clickableValues).forEach((k) => (k = 0));
+    Object.keys(clickableValues).forEach((k) => (clickableValues[k] = 0));
     for (const dragger of draggerInputs) {
       dragger.input.value = 0;
       settingNewText(
@@ -366,8 +366,6 @@ async function startStopCamera(templateId) {
   isStreaming = !isStreaming;
   await resetOnStop(isStreaming);
   cameraFeed.src = isStreaming ? generateCameraUrl : noSignalGifPath;
-  cameraFeed.style.height = isStreaming ? "unset" : "100%";
-  cameraFeed.style.width = isStreaming ? "unset" : "100%";
   // start/stop button management
   isStreaming
     ? (cameraPlayButton.style.backgroundColor = stop_red_color)

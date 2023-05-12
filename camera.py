@@ -20,6 +20,7 @@ operations = {
     "height": STREAM_HEIGHT,
     "zoom": ZOOM_DEFAULT_VALUE,
 }
+
 processing_labels = ALL_PROCESSING_LABEL.split(",")
 current_processing_label = ""
 # cv2.CAP_DSHOW parameter with DirectShow API for Windows
@@ -68,14 +69,7 @@ def generate_camera_stream():
 
         # encode the image format into streaming data
         # jpeg format good compression and reasonable image quality
-        resized = cv2.resize(
-            frame,
-            (
-                int(operations["width"] * operations["zoom"]),
-                int(operations["height"] * operations["zoom"]),
-            ),
-        )
-        ret, buffer = cv2.imencode(".jpg", resized)
+        ret, buffer = cv2.imencode(".jpg", applyOperations(frame))
         if not ret:
             raise ValueError("Couldn't encode the frame as jpeg")
 
@@ -101,7 +95,7 @@ def capture_image():
     if success:
         count += 1
         image_name = f"picture_{count}.jpg"
-        cv2.imwrite(os.path.join("pictures", image_name), frame)
+        cv2.imwrite(os.path.join("pictures", image_name), applyOperations(frame))
         timestamp = int(time.time())
         # only take picture with process if at least one has been chosen
         if current_processing_label != "":
@@ -235,3 +229,25 @@ def processing_operation(label, simple_WB, img, processed_img_name):
         raise ValueError(f"{label} operation label does not exist")
     output_path = os.path.join(directoryPath, processed_img_name)
     cv2.imwrite(output_path, corrected_img)
+
+
+def applyOperations(frame):
+    # ROI coordinates (top, left, bottom, right)
+    # starting from top-left
+    roi = [
+        0,
+        0,
+        int(STREAM_HEIGHT / operations["zoom"]),
+        int(STREAM_WIDTH / operations["zoom"]),
+    ]
+    # array[start_row:end_row, start_column:end_column]
+    roi_frame = frame[roi[0] : roi[2], roi[1] : roi[3]]
+
+    resized = cv2.resize(
+        roi_frame,
+        (
+            int(operations["width"]),
+            int(operations["height"]),
+        ),
+    )
+    return resized
