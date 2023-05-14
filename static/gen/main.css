@@ -174,7 +174,7 @@ body
   #buttons_container
   #click_button_list
   button {
-  aspect-ratio: 8/5;
+  aspect-ratio: 7/5;
   cursor: pointer;
   font-weight: 700;
   display: flex;
@@ -185,6 +185,7 @@ body
   border-radius: 12px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
   min-width: 42px;
+  padding: 12px;
 }
 @media (max-width: 1140px) {
   body
