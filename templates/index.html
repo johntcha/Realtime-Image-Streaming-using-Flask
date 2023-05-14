@@ -14,36 +14,60 @@
   <body>
     <div id="main_content">
       <h1>Realtime Image Streaming using Flask</h1>
-      <div id="television_container">
-        <div id="camera_container">
-          <div id="snackbar"></div>
-          <div id="settings_info_box">
-            <span id="info_exposure"></span>
-            <span id="info_saturation"></span>
-            <span id="info_height"></span>
-            <span id="info_width"></span>
-            <span id="info_zoom"></span>
-            <span id="info_timestamp">Last capturing timing stamp: none</span>
+      <div id="television_list">
+        <div class="television_container">
+          <div class="camera_container">
+            <div id="snackbar"></div>
+            <div id="settings_info_box">
+              <span id="info_exposure"></span>
+              <span id="info_saturation"></span>
+              <span id="info_height"></span>
+              <span id="info_width"></span>
+              <span id="info_zoom"></span>
+              <span id="info_timestamp">Last capturing timing stamp: none</span>
+            </div>
+            <div class="camera_feed_container">
+              <img
+                class="camera_feed"
+                draggable="false"
+                src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
+              />
+            </div>
+            <div id="buttons_container"></div>
           </div>
-          <div id="camera_feed_container">
-            <img
-              id="camera_feed"
-              draggable="false"
-              src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
-            />
+          <div id="other_parameters_tabs">
+            <button id="main_tab" onclick="manageTabs('main')">
+              <span> Main </span>
+            </button>
+            <button id="settings_tab" onclick="manageTabs('settings')">
+              <span> Settings </span>
+            </button>
+            <button id="operations_tab" onclick="manageTabs('operations')">
+              <span> Operations </span>
+            </button>
           </div>
-          <div id="buttons_container"></div>
         </div>
-        <div id="other_parameters_tabs">
-          <button id="main_tab" onclick="manageTabs('main')">
-            <span> Main </span>
-          </button>
-          <button id="settings_tab" onclick="manageTabs('settings')">
-            <span> Settings </span>
-          </button>
-          <button id="operations_tab" onclick="manageTabs('operations')">
-            <span> Operations </span>
-          </button>
+        <div class="television_container">
+          <div class="camera_container">
+            <div class="camera_feed_container">
+              <img
+                class="camera_feed"
+                draggable="false"
+                src="{{ url_for('static', filename='gif/no-signal-tv.gif') }}"
+              />
+            </div>
+          </div>
+          <div id="other_parameters_tabs">
+            <button id="main_tab" onclick="manageTabs('main')">
+              <span> xxxxx </span>
+            </button>
+            <button id="settings_tab" onclick="manageTabs('settings')">
+              <span> xxxxx </span>
+            </button>
+            <button id="operations_tab" onclick="manageTabs('operations')">
+              <span> xxxxx </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -64,7 +88,7 @@
               height="15"
             />
           </svg>
-          <span> Play </span>
+          <span class="main_text"> Play </span>
         </button>
         <button
           id="camera_shot_button"
@@ -79,26 +103,29 @@
               height="15"
             />
           </svg>
-          <span> Shot </span>
+          <span class="main_text"> Shot </span>
         </button>
         <div id="processing_buttons_container">
           <button
             id="camera_white_balance_button"
             onclick="applyImgProcessing('main_template', 'white_balance')"
           >
-            White balance
+            <span class="main_text"> White balance </span>
+            <span class="short_text"> WB </span>
           </button>
           <button
             id="camera_color_to_gray_button"
             onclick="applyImgProcessing('main_template', 'color_to_gray')"
           >
-            Color-to-gray
+            <span class="main_text"> Color-to-gray </span>
+            <span class="short_text"> CTG </span>
           </button>
           <button
             id="camera_canny_edge_button"
             onclick="applyImgProcessing('main_template', 'canny_edge')"
           >
-            Canny edge
+            <span class="main_text"> Canny edge </span>
+            <span class="short_text"> CE </span>
           </button>
         </div>
       </div>
