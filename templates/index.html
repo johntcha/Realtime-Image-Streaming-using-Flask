@@ -88,7 +88,7 @@
               height="15"
             />
           </svg>
-          <span> Play </span>
+          <span class="main_text"> Play </span>
         </button>
         <button
           id="camera_shot_button"
@@ -103,26 +103,29 @@
               height="15"
             />
           </svg>
-          <span> Shot </span>
+          <span class="main_text"> Shot </span>
         </button>
         <div id="processing_buttons_container">
           <button
             id="camera_white_balance_button"
             onclick="applyImgProcessing('main_template', 'white_balance')"
           >
-            White balance
+            <span class="main_text"> White balance </span>
+            <span class="short_text"> WB </span>
           </button>
           <button
             id="camera_color_to_gray_button"
             onclick="applyImgProcessing('main_template', 'color_to_gray')"
           >
-            Color-to-gray
+            <span class="main_text"> Color-to-gray </span>
+            <span class="short_text"> CTG </span>
           </button>
           <button
             id="camera_canny_edge_button"
             onclick="applyImgProcessing('main_template', 'canny_edge')"
           >
-            Canny edge
+            <span class="main_text"> Canny edge </span>
+            <span class="short_text"> CE </span>
           </button>
         </div>
       </div>

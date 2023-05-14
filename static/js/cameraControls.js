@@ -450,8 +450,8 @@ function manageDragMouvement() {
     const container = s.parentElement;
     s.addEventListener("pointerdown", (e) => {
       isDragging = true;
-      startX = e.pageX - container.offsetLeft;
-      startY = e.pageY - container.offsetTop;
+      startX = -e.pageX - container.offsetLeft;
+      startY = -e.pageY - container.offsetTop;
     });
 
     // throttle to avoid multiple call
@@ -464,8 +464,9 @@ function manageDragMouvement() {
         // negative to be more natural on drag
         const x = -e.pageX - container.offsetLeft;
         const y = -e.pageY - container.offsetTop;
-        const deltaX = Math.round(x - startX);
-        const deltaY = Math.round(y - startY);
+        // dividing by 10 because movement too fast on drag-and-move
+        const deltaX = Math.round(x - startX) / 5;
+        const deltaY = Math.round(y - startY) / 5;
         const param = { dx: deltaX, dy: deltaY };
         try {
           await fetch("/coords", {

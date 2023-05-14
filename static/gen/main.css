@@ -3,621 +3,240 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-body #main_content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-body #main_content h1 {
-  color: #4674b2;
-  font-size: 5.25vw;
-}
-@media (max-height: 450px) {
-  body #main_content h1 {
-    display: none;
-  }
-}
-@media (min-width: 875px) {
-  body #main_content h1 {
-    font-size: 46px;
-  }
-}
-body #main_content #television_list {
-  display: flex;
-  gap: 4px;
-}
-@media (max-width: 650px) {
-  body #main_content #television_list {
+  min-height: 100vh; }
+  @media (max-width: 760px) {
+    body {
+      justify-content: center; } }
+  body #main_content {
+    display: flex;
     flex-direction: column;
-  }
-}
-body #main_content .television_container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-body #main_content .television_container #other_parameters_tabs {
-  display: flex;
-  flex-direction: column;
-  padding-left: 2px;
-  padding-top: 32px;
-}
-@media (max-height: 500px) {
-  body #main_content .television_container #other_parameters_tabs {
-    padding-top: 16px;
-  }
-}
-body #main_content .television_container #other_parameters_tabs button {
-  outline: 2px solid black;
-  background: #122d53;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  padding: 4px;
-}
-body #main_content .television_container #other_parameters_tabs button span {
-  writing-mode: vertical-rl;
-  font-size: 1.5vw;
-}
-@media (min-width: 1200px) {
-  body #main_content .television_container #other_parameters_tabs button span {
-    font-size: 16px;
-  }
-}
-body #main_content .television_container .camera_container {
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-  max-width: 700px;
-  position: relative;
-}
-body #main_content .television_container .camera_container #snackbar {
-  outline: 2px solid black;
-  background: #122d53;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  margin-top: 38px;
-  width: 25%;
-  padding: 1% 3%;
-  transition: opacity 0.5s, transform 1s;
-  color: white;
-  opacity: 0;
-  visibility: hidden;
-  border-radius: 6px;
-  font-size: 1.5vw;
-  text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
-    rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  z-index: 1;
-}
-@media (max-height: 500px) {
-  body #main_content .television_container .camera_container #snackbar {
-    margin-top: 21.33333px;
-  }
-}
-@media (min-width: 1400px) {
-  body #main_content .television_container .camera_container #snackbar {
-    font-size: 16px;
-    padding: 4px;
-  }
-}
-body #main_content .television_container .camera_container #settings_info_box {
-  display: none;
-  position: absolute;
-  width: 38%;
-  flex-direction: column;
-  gap: 2px;
-  background: black;
-  color: white;
-  opacity: 0.7;
-  right: 0;
-  margin-top: 32px;
-  margin-right: 32px;
-  font-size: 1.5vw;
-  padding: 8px;
-}
-@media (min-width: 950px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #settings_info_box {
-    font-size: 14px;
-  }
-}
-@media (max-height: 500px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #settings_info_box {
-    margin-top: 16px;
-    margin-right: 16px;
-  }
-}
-body #main_content .television_container .camera_container #buttons_container {
-  display: flex;
-  justify-content: center;
-  padding: 3%;
-  background: #122d53;
-  border-radius: 12px;
-  outline: 4px solid black;
-  aspect-ratio: 10/1;
-}
-@media (max-height: 500px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container {
-    padding: 1%;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #click_button_list {
-  display: flex;
-  gap: 10%;
-  justify-content: right;
-}
-@media (max-width: 400px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #click_button_list {
-    gap: 5%;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #click_button_list
-  #processing_buttons_container {
-  display: flex;
-  gap: 8px;
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #click_button_list
-  button {
-  aspect-ratio: 6/5;
-  cursor: pointer;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75vw;
-  justify-content: center;
-  border-radius: 12px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #click_button_list
-  button:active {
-  transform: translateY(2px);
-  box-shadow: unset;
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #click_button_list
-  button#camera_play_button {
-  color: white;
-  background-color: #4fa165;
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #click_button_list
-  button#camera_shot_button {
-  color: #4674b2;
-}
-@media (max-width: 1140px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #click_button_list
-    button
-    span {
-    display: none;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list {
-  display: flex;
-  justify-content: center;
-  gap: 15%;
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  #size_buttons_container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-}
-@media (max-width: 750px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    #size_buttons_container {
-    flex-direction: row;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  justify-content: right;
-}
-@media (max-width: 750px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .setting_button_container,
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container {
-    gap: 8px;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  input[type="range"],
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  input[type="range"] {
-  height: 30%;
-}
-@media (max-width: 750px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .setting_button_container
-    input[type="range"],
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    input[type="range"] {
-    display: none;
-  }
-}
-@media (min-width: 750px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .setting_button_container
-    button,
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    button {
-    display: none;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  span,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  span {
-  color: white;
-  white-space: nowrap;
-}
-@media (max-width: 750px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .setting_button_container
-    span,
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    span {
-    font-size: 2.25vw;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  .setting_click_buttons,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  .operation_click_buttons,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  .setting_click_buttons,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  .operation_click_buttons {
-  display: flex;
-}
-@media (max-width: 750px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .setting_button_container
-    .setting_click_buttons,
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .setting_button_container
-    .operation_click_buttons,
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    .setting_click_buttons,
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    .operation_click_buttons {
-    gap: 4px;
-  }
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  .setting_click_buttons
-  button,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  .operation_click_buttons
-  button,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  .setting_click_buttons
-  button,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  .operation_click_buttons
-  button {
-  border-radius: 6px;
-  aspect-ratio: 4/1;
-  padding: 1px;
-}
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  .setting_click_buttons
-  button
-  span,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .setting_button_container
-  .operation_click_buttons
-  button
-  span,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  .setting_click_buttons
-  button
-  span,
-body
-  #main_content
-  .television_container
-  .camera_container
-  #buttons_container
-  #drag_button_list
-  .operation_button_container
-  .operation_click_buttons
-  button
-  span {
-  color: #122d53;
-  font-size: 2vw;
-}
-@media (max-width: 500px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container {
-    gap: 4px;
-  }
-}
-@media (max-width: 500px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    span {
-    font-size: 1.5vw;
-  }
-}
-@media (max-width: 500px) {
-  body
-    #main_content
-    .television_container
-    .camera_container
-    #buttons_container
-    #drag_button_list
-    .operation_button_container
-    .operation_click_buttons {
-    gap: 1px;
-  }
-}
-body #main_content .television_container .camera_feed_container {
-  border-radius: 36px;
-  border: 32px solid #122d53;
-  outline: 4px solid black;
-  aspect-ratio: 10/7;
-  overflow: hidden;
-  text-align: center;
-  background: black;
-}
-@media (max-height: 500px) {
-  body #main_content .television_container .camera_feed_container {
-    aspect-ratio: 16/8;
-    border: 16px solid #122d53;
-  }
-}
-body #main_content .television_container .camera_feed_container img {
-  height: 100%;
-  width: 100%;
-  touch-action: none;
-}
+    align-items: center;
+    width: 100%; }
+    body #main_content h1 {
+      color: #4674b2;
+      font-size: 5.25vw; }
+      @media (max-height: 545px), (max-width: 760px) {
+        body #main_content h1 {
+          display: none; } }
+      @media (min-width: 875px) {
+        body #main_content h1 {
+          font-size: 46px; } }
+    body #main_content #television_list {
+      display: flex;
+      width: 100%;
+      gap: 20px; }
+      @media (max-width: 760px) {
+        body #main_content #television_list {
+          flex-direction: column;
+          gap: 12px;
+          align-items: center; } }
+    body #main_content .television_container {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      @media (max-width: 760px) {
+        body #main_content .television_container {
+          width: 70%; } }
+      @media (max-width: 470px) {
+        body #main_content .television_container {
+          width: 100%; } }
+      body #main_content .television_container #other_parameters_tabs {
+        display: flex;
+        flex-direction: column;
+        padding-left: 2px;
+        padding-top: 32px; }
+        body #main_content .television_container #other_parameters_tabs button {
+          outline: 2px solid black;
+          background: #122d53;
+          border-radius: 6px;
+          color: white;
+          cursor: pointer;
+          padding: 4px; }
+          body #main_content .television_container #other_parameters_tabs button span {
+            writing-mode: vertical-rl;
+            font-size: 1.5vw; }
+            @media (min-width: 1200px) {
+              body #main_content .television_container #other_parameters_tabs button span {
+                font-size: 16px; } }
+      body #main_content .television_container .camera_container {
+        display: flex;
+        flex-direction: column;
+        max-width: 700px;
+        position: relative;
+        width: 100%; }
+        @media (max-width: 760px) {
+          body #main_content .television_container .camera_container {
+            width: 100%; } }
+        body #main_content .television_container .camera_container #snackbar {
+          outline: 2px solid black;
+          background: #122d53;
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%, 0%);
+          margin-top: 38px;
+          width: 25%;
+          padding: 1% 3%;
+          transition: opacity 0.5s, transform 1s;
+          color: white;
+          opacity: 0;
+          visibility: hidden;
+          border-radius: 6px;
+          font-size: 1.5vw;
+          text-align: center;
+          box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+          z-index: 1; }
+          @media (min-width: 1400px) {
+            body #main_content .television_container .camera_container #snackbar {
+              font-size: 16px;
+              padding: 4px; } }
+        body #main_content .television_container .camera_container #settings_info_box {
+          display: none;
+          position: absolute;
+          width: 38%;
+          flex-direction: column;
+          gap: 2px;
+          background: black;
+          color: white;
+          opacity: 0.7;
+          right: 0;
+          margin-top: 32px;
+          margin-right: 32px;
+          font-size: 1.5vw;
+          padding: 8px; }
+          @media (min-width: 950px) {
+            body #main_content .television_container .camera_container #settings_info_box {
+              font-size: 14px; } }
+        body #main_content .television_container .camera_container #buttons_container {
+          display: flex;
+          justify-content: center;
+          padding: 3%;
+          background: #122d53;
+          border-radius: 12px;
+          outline: 4px solid black;
+          aspect-ratio: 10/1; }
+          body #main_content .television_container .camera_container #buttons_container #click_button_list {
+            display: flex;
+            gap: 12px;
+            justify-content: right; }
+            body #main_content .television_container .camera_container #buttons_container #click_button_list #processing_buttons_container {
+              display: flex;
+              gap: 8px; }
+            body #main_content .television_container .camera_container #buttons_container #click_button_list button {
+              aspect-ratio: 8/5;
+              cursor: pointer;
+              font-weight: 700;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+              font-size: 0.75vw;
+              justify-content: center;
+              border-radius: 12px;
+              box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+              min-width: 42px; }
+              @media (max-width: 1140px) {
+                body #main_content .television_container .camera_container #buttons_container #click_button_list button {
+                  font-size: 2.25vw; } }
+              body #main_content .television_container .camera_container #buttons_container #click_button_list button:active {
+                transform: translateY(2px);
+                box-shadow: unset; }
+              body #main_content .television_container .camera_container #buttons_container #click_button_list button#camera_play_button {
+                color: white;
+                background-color: #4fa165; }
+              body #main_content .television_container .camera_container #buttons_container #click_button_list button#camera_shot_button {
+                color: #4674b2; }
+              @media (max-width: 1140px) {
+                body #main_content .television_container .camera_container #buttons_container #click_button_list button .main_text {
+                  display: none; } }
+              @media (min-width: 1140px) {
+                body #main_content .television_container .camera_container #buttons_container #click_button_list button .short_text {
+                  display: none; } }
+          body #main_content .television_container .camera_container #buttons_container #drag_button_list {
+            display: flex;
+            justify-content: center;
+            gap: 12px; }
+            @media (max-width: 1000px) and (min-width: 760px) {
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list {
+                flex-direction: column; } }
+            body #main_content .television_container .camera_container #buttons_container #drag_button_list #size_buttons_container {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              gap: 8px; }
+              @media (max-width: 750px) {
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list #size_buttons_container {
+                  flex-direction: row; } }
+            body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container,
+            body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container {
+              display: flex;
+              gap: 4px;
+              align-items: center;
+              justify-content: right; }
+              @media (max-width: 750px) {
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container,
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container {
+                  gap: 8px; } }
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container input[type="range"],
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container input[type="range"] {
+                height: 30%; }
+                @media (max-width: 750px) {
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container input[type="range"],
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container input[type="range"] {
+                    display: none; } }
+              @media (min-width: 750px) {
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container button,
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container button {
+                  display: none; } }
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container span,
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container span {
+                color: white;
+                white-space: nowrap; }
+                @media (max-width: 750px) {
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container span,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container span {
+                    font-size: 2.25vw; } }
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .setting_click_buttons,
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .operation_click_buttons,
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .setting_click_buttons,
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .operation_click_buttons {
+                display: flex; }
+                @media (max-width: 750px) {
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .setting_click_buttons,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .operation_click_buttons,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .setting_click_buttons,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .operation_click_buttons {
+                    gap: 4px; } }
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .setting_click_buttons button,
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .operation_click_buttons button,
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .setting_click_buttons button,
+                body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .operation_click_buttons button {
+                  border-radius: 6px;
+                  aspect-ratio: 4/1;
+                  padding: 1px; }
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .setting_click_buttons button span,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .setting_button_container .operation_click_buttons button span,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .setting_click_buttons button span,
+                  body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .operation_click_buttons button span {
+                    color: #122d53;
+                    font-size: 2vw; }
+            @media (max-width: 500px) {
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container {
+                gap: 4px; } }
+            @media (max-width: 500px) {
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container span {
+                font-size: 1.5vw; } }
+            @media (max-width: 500px) {
+              body #main_content .television_container .camera_container #buttons_container #drag_button_list .operation_button_container .operation_click_buttons {
+                gap: 1px; } }
+      body #main_content .television_container .camera_feed_container {
+        border-radius: 36px;
+        border: 32px solid #122d53;
+        outline: 4px solid black;
+        aspect-ratio: 10/7;
+        overflow: hidden;
+        text-align: center;
+        background: black; }
+        body #main_content .television_container .camera_feed_container img {
+          height: 100%;
+          width: 100%;
+          touch-action: none; }
