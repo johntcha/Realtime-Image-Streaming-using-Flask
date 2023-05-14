@@ -32,4 +32,5 @@ build:
 	make clean
 	make install
 	make format
+	docker build -t rtisuf .
 	
